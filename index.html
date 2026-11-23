@@ -1,0 +1,1981 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Informatika Kelas VII — Media Belajar Interaktif | SMP Al-Akhyar</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              200: '#c7d2fe',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81',
+            },
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    /* Custom scrollbar & smooth transitions */
+    body {
+      background-color: #f8fafc;
+      color: #0f172a;
+      scroll-behavior: smooth;
+    }
+    .card-flip {
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .card-flip:active {
+      transform: scale(0.95);
+    }
+    .dot-pattern {
+      background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+      background-size: 16px 16px;
+    }
+    /* Custom range slider */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 8px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #4f46e5;
+      cursor: pointer;
+      border: 3px solid #ffffff;
+      box-shadow: 0 2px 6px rgba(79, 70, 229, 0.45);
+    }
+    .fade-in {
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-indigo-100 selection:text-indigo-800">
+
+  <!-- TOP HEADER / NAVBAR -->
+  <header class="bg-gradient-to-r from-indigo-700 via-indigo-600 to-blue-600 text-white shadow-lg sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <!-- Brand Identity -->
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-white/15 backdrop-blur-sm border border-white/25 flex items-center justify-center text-xl shadow-inner shrink-0">
+            <i class="fa-solid fa-laptop-code text-amber-300"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-200 border border-amber-300/30">
+                SMP AL-AKHYAR • Fase D (Kelas VII)
+              </span>
+              <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-200 border border-emerald-300/30">
+                KKTP: 76
+              </span>
+            </div>
+            <h1 class="text-lg sm:text-xl font-extrabold tracking-tight leading-tight mt-0.5">
+              Portal Belajar Interaktif Informatika
+            </h1>
+            <p class="text-xs text-indigo-100/90 hidden sm:block">
+              Semester Ganjil TA 2026/2027 • Penyusun: Ahmad Hudzaifah, S.Kom
+            </p>
+          </div>
+        </div>
+
+        <!-- Primary 3-Mode Navigation -->
+        <nav class="flex bg-indigo-950/35 p-1 rounded-2xl border border-white/15 backdrop-blur-sm overflow-x-auto" aria-label="Mode Belajar">
+          <button onclick="switchMainMode('lab')" id="nav-lab" class="nav-btn flex-1 sm:flex-none flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white text-indigo-700 shadow-sm whitespace-nowrap">
+            <i class="fa-solid fa-flask"></i>
+            <span>1. Lab Simulasi</span>
+          </button>
+          <button onclick="switchMainMode('materi')" id="nav-materi" class="nav-btn flex-1 sm:flex-none flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-indigo-100 hover:text-white hover:bg-white/10 whitespace-nowrap">
+            <i class="fa-solid fa-book-open"></i>
+            <span>2. Materi & Kisi-Kisi</span>
+          </button>
+          <button onclick="switchMainMode('kuis')" id="nav-kuis" class="nav-btn flex-1 sm:flex-none flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-indigo-100 hover:text-white hover:bg-white/10 whitespace-nowrap">
+            <i class="fa-solid fa-pen-to-square"></i>
+            <span>3. Bank Soal (50)</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- TOAST NOTIFICATION (Replaces alert()) -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full px-4 sm:px-0"></div>
+
+  <!-- MAIN CONTENT AREA -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- ===================================================================== -->
+    <!-- MODE 1: SIMULASI & LAB UNPLUGGED COMPUTING                            -->
+    <!-- ===================================================================== -->
+    <section id="section-lab" class="fade-in space-y-6">
+      <!-- Intro Banner -->
+      <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div>
+          <span class="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full mb-2">
+            <i class="fa-solid fa-puzzle-piece"></i> Eksplorasi Konsep Praktis
+          </span>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">Laboratorium Unplugged Computing & Simulasi</h2>
+          <p class="text-sm text-slate-600 mt-1">
+            Praktikkan langsung konsep Berpikir Komputasional, Manajemen Berkas, dan Kriptografi Caesar Cipher sesuai soal ujian!
+          </p>
+        </div>
+        <!-- Lab Selector Pills -->
+        <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 shrink-0">
+          <button onclick="switchLab(1)" id="tab-lab-1" class="lab-tab px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold border transition-all bg-indigo-600 text-white border-indigo-600 shadow-sm flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center text-xs">1</span>
+            Kartu Biner
+          </button>
+          <button onclick="switchLab(2)" id="tab-lab-2" class="lab-tab px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold border transition-all bg-white text-slate-700 border-slate-200 hover:border-indigo-300 flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs">2</span>
+            Optimasi Waktu
+          </button>
+          <button onclick="switchLab(3)" id="tab-lab-3" class="lab-tab px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold border transition-all bg-white text-slate-700 border-slate-200 hover:border-indigo-300 flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs">3</span>
+            Folder & Ekstensi
+          </button>
+          <button onclick="switchLab(4)" id="tab-lab-4" class="lab-tab px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold border transition-all bg-white text-slate-700 border-slate-200 hover:border-indigo-300 flex items-center gap-2">
+            <span class="w-5 h-5 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs">4</span>
+            Caesar Cipher
+          </button>
+        </div>
+      </div>
+
+      <!-- LAB 1: KARTU TITIK BINER INTERAKTIF (16 - 8 - 4 - 2 - 1) -->
+      <div id="lab-panel-1" class="lab-panel bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="bg-gradient-to-r from-indigo-50 to-blue-50 px-6 py-4 border-b border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Bab I • Berpikir Komputasional (Representasi Data)</span>
+            <h3 class="text-lg font-extrabold text-slate-900">Lab 1: Kartu Titik Biner Interaktif (16 - 8 - 4 - 2 - 1)</h3>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="resetBinaryCards()" class="px-3 py-1.5 rounded-xl bg-white border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 transition">
+              <i class="fa-solid fa-rotate-left mr-1"></i> Reset (00000)
+            </button>
+            <button onclick="generateBinaryChallenge()" class="px-3.5 py-1.5 rounded-xl bg-amber-500 text-white text-xs font-bold hover:bg-amber-600 transition shadow-sm">
+              <i class="fa-solid fa-shuffle mr-1"></i> Tantangan Acak
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6 space-y-6">
+          <!-- Challenge Box (Optional / Active) -->
+          <div id="binary-challenge-box" class="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-400/25 text-amber-700 flex items-center justify-center text-lg shrink-0 mt-0.5">
+                <i class="fa-solid fa-bullseye"></i>
+              </div>
+              <div>
+                <p class="text-xs font-bold uppercase text-amber-700">Misi Latihan Konversi (Sesuai Soal No. 4, 5, 42)</p>
+                <p id="binary-challenge-text" class="text-sm sm:text-base font-bold text-slate-800 mt-0.5">
+                  Klik kartu di bawah agar membentuk bilangan desimal <span class="text-indigo-700 underline decoration-2">22</span>!
+                </p>
+              </div>
+            </div>
+            <div id="binary-challenge-status" class="px-3.5 py-1.5 rounded-xl bg-white border border-amber-200 text-xs font-bold text-amber-800 self-start sm:self-center">
+              Status: Belum Cocok
+            </div>
+          </div>
+
+          <!-- 5 Interactive Binary Cards -->
+          <div class="grid grid-cols-5 gap-2.5 sm:gap-5 max-w-3xl mx-auto" id="binary-cards-grid">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Real-time Calculation Readout -->
+          <div class="bg-slate-900 text-white rounded-2xl p-5 max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
+            <div class="text-center sm:text-left">
+              <p class="text-xs text-slate-400 uppercase font-semibold">Kode Biner (5-Bit)</p>
+              <p id="binary-string-out" class="text-2xl sm:text-3xl font-mono font-bold text-emerald-400 tracking-widest mt-1">00000</p>
+            </div>
+            <div class="text-center border-y sm:border-y-0 sm:border-x border-slate-700 py-3 sm:py-0">
+              <p class="text-xs text-slate-400 uppercase font-semibold">Penjumlahan Titik Terbuka</p>
+              <p id="binary-formula-out" class="text-sm font-mono text-amber-300 mt-1.5">0 = 0</p>
+            </div>
+            <div class="text-center sm:text-right">
+              <p class="text-xs text-slate-400 uppercase font-semibold">Nilai Desimal</p>
+              <p id="binary-decimal-out" class="text-3xl sm:text-4xl font-extrabold text-white mt-0.5">0</p>
+            </div>
+          </div>
+
+          <!-- Quick Preset Buttons from Exam -->
+          <div class="max-w-3xl mx-auto flex flex-wrap items-center justify-center gap-2 text-xs">
+            <span class="font-bold text-slate-500 mr-1">Uji Angka Bank Soal:</span>
+            <button onclick="setBinaryTarget(21)" class="px-3 py-1.5 rounded-xl bg-indigo-50 text-indigo-700 font-bold hover:bg-indigo-100">Target 21 (10101)</button>
+            <button onclick="setBinaryTarget(22)" class="px-3 py-1.5 rounded-xl bg-indigo-50 text-indigo-700 font-bold hover:bg-indigo-100">Target 22 (10110)</button>
+            <button onclick="setBinaryTarget(25)" class="px-3 py-1.5 rounded-xl bg-indigo-50 text-indigo-700 font-bold hover:bg-indigo-100">Target 25 (11001)</button>
+            <button onclick="setBinaryTarget(29)" class="px-3 py-1.5 rounded-xl bg-indigo-50 text-indigo-700 font-bold hover:bg-indigo-100">Target 29 (11101)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- LAB 2: SIMULASI OPTIMASI WAKTU TUGAS PARALEL -->
+      <div id="lab-panel-2" class="lab-panel hidden bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="bg-gradient-to-r from-emerald-50 to-teal-50 px-6 py-4 border-b border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-700">Bab I • Optimasi Penjadwalan (Paralel vs Berurutan)</span>
+            <h3 class="text-lg font-extrabold text-slate-900">Lab 2: Simulasi Penjadwalan Tugas Paralel</h3>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="selectScheduleScenario('rina')" id="btn-scen-rina" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow-sm">
+              Kasus 1: Rina (Soal No. 7)
+            </button>
+            <button onclick="selectScheduleScenario('ibu')" id="btn-scen-ibu" class="px-3.5 py-1.5 rounded-xl bg-white border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50">
+              Kasus 2: Sarapan Ibu (Soal No. 41)
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6 space-y-6">
+          <!-- Scenario Description -->
+          <div id="schedule-desc" class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-sm text-slate-700 leading-relaxed">
+            <!-- Filled by JS -->
+          </div>
+
+          <!-- Interactive Timeline Controls -->
+          <div class="space-y-4" id="schedule-tasks-container">
+            <!-- Task sliders rendered by JS -->
+          </div>
+
+          <!-- Visual Timeline Chart (0 to 40 mins) -->
+          <div class="bg-slate-900 text-white rounded-2xl p-5 space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-700 pb-3">
+              <div>
+                <h4 class="font-bold text-sm text-slate-200">Lini Masa Eksekusi Kegiatan (Menit ke-0 s.d. Menit Selesai)</h4>
+                <p class="text-xs text-slate-400">Geser waktu mulai tiap tugas agar tugas otomatis berjalan bersamaan dengan tugas manual!</p>
+              </div>
+              <div class="flex items-center gap-4">
+                <div class="text-right">
+                  <span class="text-xs text-slate-400 block">Total Waktu Kamu</span>
+                  <span id="schedule-total-time" class="text-2xl font-extrabold text-amber-400">40 Menit</span>
+                </div>
+                <div class="text-right border-l border-slate-700 pl-4">
+                  <span class="text-xs text-slate-400 block">Target Optimal</span>
+                  <span id="schedule-optimal-time" class="text-2xl font-extrabold text-emerald-400">25 Menit</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Timeline Bars -->
+            <div id="schedule-timeline-bars" class="space-y-3 pt-1">
+              <!-- Rendered by JS -->
+            </div>
+
+            <!-- Validation Feedback -->
+            <div id="schedule-feedback" class="rounded-xl p-3.5 text-xs sm:text-sm font-semibold bg-slate-800 text-slate-200 border border-slate-700">
+              Atur waktu mulai setiap kegiatan pada penggeser di atas.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LAB 3: SIMULATOR HIERARKI FOLDER & EKSTENSI BERKAS -->
+      <div id="lab-panel-3" class="lab-panel hidden bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="bg-gradient-to-r from-amber-50 to-orange-50 px-6 py-4 border-b border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-700">Bab II • Manajemen Berkas & Ekstensi (Soal No. 13, 14, 15, 44)</span>
+            <h3 class="text-lg font-extrabold text-slate-900">Lab 3: Pengelompokan Berkas & Simulator Path Direktori</h3>
+          </div>
+          <button onclick="resetFolderLab()" class="px-3.5 py-1.5 rounded-xl bg-white border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 self-start sm:self-center">
+            <i class="fa-solid fa-rotate-left mr-1"></i> Reset Berkas
+          </button>
+        </div>
+
+        <div class="p-6 space-y-6">
+          <p class="text-sm text-slate-600">
+            Klik berkas di area <strong>"Berkas Belum Teratur"</strong>, lalu klik folder tujuan yang tepat di dalam direktori <code class="px-2 py-0.5 bg-slate-100 rounded text-indigo-700 font-mono text-xs">D:\Sekolah_Kelas7\</code> berdasarkan ekstensi berkasnya!
+          </p>
+
+          <!-- Unsorted Files Tray -->
+          <div class="bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl p-4">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-500">
+                <i class="fa-solid fa-inbox mr-1"></i> Berkas Belum Teratur (Klik berkas untuk memilih)
+              </span>
+              <span id="folder-progress-badge" class="text-xs font-bold px-2.5 py-1 rounded-full bg-indigo-100 text-indigo-700">
+                0 / 6 Berkas Terorganisir
+              </span>
+            </div>
+            <div id="unsorted-files-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Directory Tree & Target Folders -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="target-folders-grid">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Path Inspector Bar -->
+          <div class="bg-slate-900 text-slate-200 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 font-mono text-xs sm:text-sm">
+            <div class="flex items-center gap-2 overflow-x-auto">
+              <span class="text-amber-400 font-bold shrink-0">ACTIVE PATH &gt;</span>
+              <span id="active-file-path" class="text-emerald-400">D:\Sekolah_Kelas7\ (Pilih berkas atau folder untuk melihat jalur direktori)</span>
+            </div>
+            <span id="folder-lab-status" class="text-xs font-sans font-bold text-slate-400 shrink-0"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- LAB 4: MESIN ENKRIPSI & DEKRIPSI CAESAR CIPHER -->
+      <div id="lab-panel-4" class="lab-panel hidden bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="bg-gradient-to-r from-purple-50 to-indigo-50 px-6 py-4 border-b border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-purple-700">Bab IV • Keamanan Data & Kriptografi (Soal No. 38, 39, 49)</span>
+            <h3 class="text-lg font-extrabold text-slate-900">Lab 4: Mesin Caesar Cipher & Penguji Kekuatan Kata Sandi</h3>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <button onclick="loadCipherPreset('DATA', 3, 'encrypt')" class="px-2.5 py-1 rounded-lg bg-white border border-purple-200 text-xs font-bold text-purple-700 hover:bg-purple-50">
+              Soal 38: DATA (+3)
+            </button>
+            <button onclick="loadCipherPreset('KROD', 3, 'decrypt')" class="px-2.5 py-1 rounded-lg bg-white border border-purple-200 text-xs font-bold text-purple-700 hover:bg-purple-50">
+              Soal 39: KROD (-3)
+            </button>
+            <button onclick="loadCipherPreset('INFORMATIKA', 3, 'encrypt')" class="px-2.5 py-1 rounded-lg bg-white border border-purple-200 text-xs font-bold text-purple-700 hover:bg-purple-50">
+              Soal 49: INFORMATIKA (+3)
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <!-- Left: Caesar Cipher Machine -->
+          <div class="lg:col-span-7 space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Mode Operasi</label>
+                <div class="grid grid-cols-2 bg-slate-100 p-1 rounded-xl">
+                  <button onclick="setCipherMode('encrypt')" id="btn-cipher-encrypt" class="py-2 rounded-lg text-xs font-bold bg-indigo-600 text-white shadow-sm transition">
+                    <i class="fa-solid fa-lock mr-1"></i> Enkripsi (+Kunci)
+                  </button>
+                  <button onclick="setCipherMode('decrypt')" id="btn-cipher-decrypt" class="py-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition">
+                    <i class="fa-solid fa-lock-open mr-1"></i> Dekripsi (-Kunci)
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-bold uppercase text-slate-500 mb-1">
+                  Pergeseran Kunci (Shift): <span id="cipher-shift-label" class="text-indigo-600 font-extrabold">+3 Huruf</span>
+                </label>
+                <input type="range" id="cipher-shift-slider" min="1" max="5" value="3" oninput="updateCipher()" class="w-full mt-2" />
+                <div class="flex justify-between text-[11px] font-mono text-slate-400 mt-1">
+                  <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Input & Output -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Teks Masukan (Huruf A-Z)</label>
+                <input type="text" id="cipher-input" value="INFORMATIKA" oninput="updateCipher()" maxlength="24"
+                  class="w-full px-4 py-3 rounded-2xl border border-slate-300 font-mono text-lg font-bold uppercase tracking-wider focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  placeholder="Ketik kata..." />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Hasil Transformasi</label>
+                <div id="cipher-output" class="w-full px-4 py-3 rounded-2xl bg-slate-900 text-emerald-400 font-mono text-lg font-bold tracking-wider border border-slate-800 min-h-[52px] flex items-center">
+                  LQIRUPDWLND
+                </div>
+              </div>
+            </div>
+
+            <!-- Letter-by-letter mapping table -->
+            <div>
+              <p class="text-xs font-bold text-slate-500 uppercase mb-2">Tabel Pergeseran Alfabet (A–Z)</p>
+              <div id="cipher-alphabet-map" class="grid grid-cols-13 gap-1 bg-slate-50 p-3 rounded-2xl border border-slate-200 overflow-x-auto text-center font-mono text-xs">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Password Strength Analyzer (Soal No. 40) -->
+          <div class="lg:col-span-5 bg-slate-50 rounded-2xl p-5 border border-slate-200 flex flex-col justify-between space-y-4">
+            <div>
+              <span class="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full mb-2">
+                <i class="fa-solid fa-shield-halved"></i> Keamanan Akun (Soal No. 40)
+              </span>
+              <h4 class="font-extrabold text-slate-900 text-base">Pengukur Kekuatan Kata Sandi</h4>
+              <p class="text-xs text-slate-600 mt-1">
+                Uji kombinasi kata sandi untuk melihat tingkat keamanannya terhadap peretasan (brute-force).
+              </p>
+
+              <div class="mt-4">
+                <input type="text" id="pwd-input" oninput="checkPasswordStrength()" value="SMPAlAkhyar#2026"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  placeholder="Masukkan kata sandi uji coba..." />
+              </div>
+
+              <!-- Strength Meter Bar -->
+              <div class="mt-3">
+                <div class="flex justify-between text-xs font-bold mb-1">
+                  <span class="text-slate-500">Tingkat Kekuatan:</span>
+                  <span id="pwd-strength-label" class="text-emerald-600">Sangat Kuat</span>
+                </div>
+                <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
+                  <div id="pwd-strength-bar" class="h-full bg-emerald-500 transition-all duration-300" style="width: 100%"></div>
+                </div>
+              </div>
+
+              <!-- Checklist -->
+              <ul class="mt-4 space-y-1.5 text-xs" id="pwd-checklist">
+                <li id="chk-len" class="flex items-center gap-2 text-emerald-700 font-medium"><i class="fa-solid fa-circle-check"></i> Minimal 8 karakter</li>
+                <li id="chk-upper" class="flex items-center gap-2 text-emerald-700 font-medium"><i class="fa-solid fa-circle-check"></i> Mengandung Huruf Kapital (A-Z)</li>
+                <li id="chk-lower" class="flex items-center gap-2 text-emerald-700 font-medium"><i class="fa-solid fa-circle-check"></i> Mengandung Huruf Kecil (a-z)</li>
+                <li id="chk-num" class="flex items-center gap-2 text-emerald-700 font-medium"><i class="fa-solid fa-circle-check"></i> Mengandung Angka (0-9)</li>
+                <li id="chk-sym" class="flex items-center gap-2 text-emerald-700 font-medium"><i class="fa-solid fa-circle-check"></i> Mengandung Simbol Khusus (!@#$%)</li>
+              </ul>
+            </div>
+
+            <div class="pt-2 border-t border-slate-200 flex flex-wrap gap-1.5">
+              <span class="text-[11px] font-bold text-slate-400 w-full">Bandingkan Opsi Soal No. 40:</span>
+              <button onclick="testPwdPreset('12345678')" class="px-2 py-1 rounded bg-white border border-slate-200 text-[11px] font-mono hover:bg-slate-100">12345678</button>
+              <button onclick="testPwdPreset('budi2013')" class="px-2 py-1 rounded bg-white border border-slate-200 text-[11px] font-mono hover:bg-slate-100">budi2013</button>
+              <button onclick="testPwdPreset('SMPAlAkhyar#2026')" class="px-2 py-1 rounded bg-white border border-slate-200 text-[11px] font-mono hover:bg-slate-100">SMPAlAkhyar#2026</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- MODE 2: RINGKASAN MATERI & KISI-KISI PER BAB                          -->
+    <!-- ===================================================================== -->
+    <section id="section-materi" class="hidden fade-in space-y-6">
+      <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full mb-2">
+            <i class="fa-solid fa-sitemap"></i> Peta Konsep & Indikator Ujian
+          </span>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">Ringkasan Materi & Kisi-Kisi Semester Ganjil</h2>
+          <p class="text-sm text-slate-600 mt-1">
+            Pelajari rangkuman materi esensial Bab I s.d. Bab IV beserta nomor soal terkait sebelum memulai tryout.
+          </p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="toggleAllAccordions(true)" class="px-3.5 py-2 rounded-xl bg-indigo-50 text-indigo-700 text-xs font-bold hover:bg-indigo-100">
+            Buka Semua Bab
+          </button>
+          <button onclick="toggleAllAccordions(false)" class="px-3.5 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold hover:bg-slate-200">
+            Tutup Semua
+          </button>
+        </div>
+      </div>
+
+      <!-- 4 Chapters Cards -->
+      <div id="materi-accordion-container" class="space-y-4">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- MODE 3: KUIS INTERAKTIF & LATIHAN URAIAN (50 SOAL LENGKAP)            -->
+    <!-- ===================================================================== -->
+    <section id="section-kuis" class="hidden fade-in space-y-6">
+      <!-- Sub-navigation between PG (1-40) and Essay (41-50) -->
+      <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div>
+          <span class="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 bg-amber-50 px-3 py-1 rounded-full mb-2">
+            <i class="fa-solid fa-award"></i> Evaluasi Sumatif • KKTP: 76
+          </span>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">Bank Soal Lengkap Informatika Kelas VII (50 Soal)</h2>
+          <p class="text-sm text-slate-600 mt-1">
+            Terdiri atas 40 soal Pilihan Ganda (dengan pembahasan) dan 10 soal Uraian (dengan kunci & rubrik guru).
+          </p>
+        </div>
+        <div class="flex bg-slate-100 p-1.5 rounded-2xl border border-slate-200 shrink-0">
+          <button onclick="switchQuizSubMode('pg')" id="subtab-pg" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white shadow-sm transition">
+            <i class="fa-solid fa-list-check mr-1.5"></i> Pilihan Ganda (No. 1–40)
+          </button>
+          <button onclick="switchQuizSubMode('essay')" id="subtab-essay" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 transition">
+            <i class="fa-solid fa-file-pen mr-1.5"></i> Soal Uraian (No. 41–50)
+          </button>
+        </div>
+      </div>
+
+      <!-- SUB-VIEW A: PILIHAN GANDA (NO. 1 - 40) -->
+      <div id="quiz-pg-container" class="space-y-6">
+        <!-- Quiz Setup / Filter Bar -->
+        <div id="pg-setup-bar" class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-bold text-slate-500 uppercase mr-1">Filter Materi:</span>
+            <button onclick="filterPGQuestions('ALL')" id="filter-pg-ALL" class="pg-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white">Semua (40 Soal)</button>
+            <button onclick="filterPGQuestions('Bab I')" id="filter-pg-Bab I" class="pg-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">Bab I: BK (10)</button>
+            <button onclick="filterPGQuestions('Bab II')" id="filter-pg-Bab II" class="pg-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">Bab II: TIK (10)</button>
+            <button onclick="filterPGQuestions('Bab III')" id="filter-pg-Bab III" class="pg-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">Bab III: SK (10)</button>
+            <button onclick="filterPGQuestions('Bab IV')" id="filter-pg-Bab IV" class="pg-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">Bab IV: JKI (10)</button>
+          </div>
+
+          <div class="flex items-center gap-3 self-start md:self-center">
+            <label class="inline-flex items-center gap-2 cursor-pointer text-xs font-bold text-slate-700 bg-slate-50 px-3 py-2 rounded-xl border border-slate-200">
+              <input type="checkbox" id="instant-feedback-toggle" checked onchange="renderPGQuestions()" class="rounded text-indigo-600 focus:ring-indigo-500 w-4 h-4" />
+              <span>Pembahasan Langsung</span>
+            </label>
+            <button onclick="resetPGQuiz()" class="px-3.5 py-2 rounded-xl bg-rose-50 text-rose-700 border border-rose-200 text-xs font-bold hover:bg-rose-100">
+              <i class="fa-solid fa-rotate-right mr-1"></i> Ulangi
+            </button>
+          </div>
+        </div>
+
+        <!-- Live Score & Timer Status Bar -->
+        <div class="bg-slate-900 text-white rounded-2xl px-5 py-3.5 flex flex-wrap items-center justify-between gap-4 shadow-md sticky top-[72px] z-30">
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
+              <i class="fa-regular fa-clock text-amber-400"></i>
+              <span id="quiz-timer" class="font-mono font-bold text-sm sm:text-base">00:00</span>
+            </div>
+            <div class="h-4 w-px bg-slate-700"></div>
+            <div class="text-xs sm:text-sm">
+              Terjawab: <span id="pg-answered-count" class="font-extrabold text-indigo-300">0</span> / <span id="pg-total-count">40</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="finishAndGradePG()" class="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs sm:text-sm font-extrabold shadow-sm transition">
+              <i class="fa-solid fa-calculator mr-1.5"></i> Hitung Nilai Akhir & Analisis KKTP
+            </button>
+          </div>
+        </div>
+
+        <!-- Score Report Modal / Inline Card (Hidden until graded) -->
+        <div id="pg-result-card" class="hidden bg-white rounded-3xl border-2 border-indigo-500 p-6 shadow-xl space-y-6">
+          <!-- Populated dynamically when user clicks Hitung Nilai Akhir -->
+        </div>
+
+        <!-- Question Cards List -->
+        <div id="pg-questions-list" class="space-y-4">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- SUB-VIEW B: LATIHAN SOAL URAIAN / ESSAY (NO. 41 - 50) -->
+      <div id="quiz-essay-container" class="hidden space-y-5">
+        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="text-xs sm:text-sm text-amber-900">
+            <strong>Petunjuk Latihan Uraian (Bobot 40 Poin pada Ujian Asli):</strong> Tuliskan langkah penyelesaianmu pada kolom yang tersedia, kemudian klik tombol <strong>"Lihat Kunci Jawaban & Rubrik Pembahasan"</strong> untuk mencocokkan dengan standar penilaian guru.
+          </div>
+          <button onclick="revealAllEssays()" class="px-3.5 py-2 rounded-xl bg-amber-600 text-white text-xs font-bold hover:bg-amber-700 shrink-0">
+            Buka Semua Kunci Jawaban
+          </button>
+        </div>
+
+        <div id="essay-questions-list" class="space-y-4">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 mt-12 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+      <p class="font-semibold text-slate-700">
+        SMP AL-AKHYAR • Mata Pelajaran Informatika Kelas VII (Kurikulum Merdeka - Fase D)
+      </p>
+      <p>
+        Sumber Materi: Kisi-Kisi & Bank Soal Semester 1 TA 2026/2027 (Ahmad Hudzaifah, S.Kom)
+      </p>
+    </div>
+  </footer>
+
+  <!-- ===================================================================== -->
+  <!-- JAVASCRIPT APPLICATION LOGIC & COMPLETE QUESTION BANK                 -->
+  <!-- ===================================================================== -->
+  <script>
+    // =========================================================================
+    // 1. TOAST NOTIFICATION SYSTEM (Safe replacement for alert/confirm)
+    // =========================================================================
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const styles = {
+        success: 'bg-emerald-600 text-white border-emerald-500',
+        warning: 'bg-amber-500 text-white border-amber-400',
+        error: 'bg-rose-600 text-white border-rose-500',
+        info: 'bg-slate-900 text-white border-slate-700'
+      };
+      const icons = {
+        success: 'fa-circle-check',
+        warning: 'fa-triangle-exclamation',
+        error: 'fa-circle-xmark',
+        info: 'fa-circle-info'
+      };
+      toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-2xl shadow-lg border text-xs sm:text-sm font-semibold transition-all duration-300 ${styles[type] || styles.info}`;
+      toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info} text-base shrink-0"></i><span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(8px)';
+        setTimeout(() => toast.remove(), 300);
+      }, 3200);
+    }
+
+    // =========================================================================
+    // 2. MAIN NAVIGATION & LAB SWITCHING
+    // =========================================================================
+    function switchMainMode(mode) {
+      ['lab', 'materi', 'kuis'].forEach(m => {
+        document.getElementById(`section-${m}`).classList.add('hidden');
+        const btn = document.getElementById(`nav-${m}`);
+        btn.className = 'nav-btn flex-1 sm:flex-none flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-indigo-100 hover:text-white hover:bg-white/10 whitespace-nowrap';
+      });
+      document.getElementById(`section-${mode}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`nav-${mode}`);
+      activeBtn.className = 'nav-btn flex-1 sm:flex-none flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-white text-indigo-700 shadow-sm whitespace-nowrap';
+
+      if (mode === 'kuis' && !timerInterval) {
+        startQuizTimer();
+      }
+    }
+
+    function switchLab(labNum) {
+      [1, 2, 3, 4].forEach(n => {
+        document.getElementById(`lab-panel-${n}`).classList.add('hidden');
+        const tab = document.getElementById(`tab-lab-${n}`);
+        tab.className = 'lab-tab px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold border transition-all bg-white text-slate-700 border-slate-200 hover:border-indigo-300 flex items-center gap-2';
+      });
+      document.getElementById(`lab-panel-${labNum}`).classList.remove('hidden');
+      const activeTab = document.getElementById(`tab-lab-${labNum}`);
+      activeTab.className = 'lab-tab px-3.5 py-2.5 rounded-2xl text-xs sm:text-sm font-bold border transition-all bg-indigo-600 text-white border-indigo-600 shadow-sm flex items-center gap-2';
+    }
+
+    // =========================================================================
+    // 3. LAB 1: KARTU TITIK BINER INTERAKTIF (16 - 8 - 4 - 2 - 1)
+    // =========================================================================
+    const binaryWeights = [16, 8, 4, 2, 1];
+    let binaryStates = [false, false, false, false, false];
+    let binaryTarget = 22;
+
+    function renderBinaryCards() {
+      const grid = document.getElementById('binary-cards-grid');
+      grid.innerHTML = '';
+
+      binaryWeights.forEach((weight, idx) => {
+        const isOpen = binaryStates[idx];
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.onclick = () => toggleBinaryCard(idx);
+        card.className = `card-flip rounded-2xl p-3 sm:p-4 border-2 flex flex-col items-center justify-between min-h-[145px] sm:min-h-[185px] shadow-sm cursor-pointer select-none ${
+          isOpen
+            ? 'bg-white border-indigo-500 ring-4 ring-indigo-500/15'
+            : 'bg-slate-800 border-slate-700 text-slate-400'
+        }`;
+
+        // Generate visual dots matching weight
+        let dotsHtml = '';
+        if (isOpen) {
+          const cols = weight >= 8 ? 'grid-cols-4' : weight === 4 ? 'grid-cols-2' : 'grid-cols-1';
+          dotsHtml = `<div class="grid ${cols} gap-1 my-auto">`;
+          for (let d = 0; d < weight; d++) {
+            dotsHtml += `<span class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-indigo-600 inline-block"></span>`;
+          }
+          dotsHtml += `</div>`;
+        } else {
+          dotsHtml = `<div class="my-auto text-slate-600 text-xl sm:text-2xl"><i class="fa-solid fa-eye-slash"></i></div>`;
+        }
+
+        card.innerHTML = `
+          <div class="w-full flex items-center justify-between text-[11px] sm:text-xs font-extrabold">
+            <span class="${isOpen ? 'text-indigo-700' : 'text-slate-400'}">${weight}</span>
+            <span class="px-1.5 py-0.5 rounded font-mono ${isOpen ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-700 text-slate-300'}">
+              ${isOpen ? '1' : '0'}
+            </span>
+          </div>
+          ${dotsHtml}
+          <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider ${isOpen ? 'text-slate-600' : 'text-slate-500'}">
+            ${isOpen ? 'Terbuka' : 'Tertutup'}
+          </span>
+        `;
+        grid.appendChild(card);
+      });
+
+      // Calculate totals
+      const bitString = binaryStates.map(s => (s ? '1' : '0')).join('');
+      const activeValues = binaryWeights.filter((_, i) => binaryStates[i]);
+      const decimalVal = activeValues.reduce((acc, v) => acc + v, 0);
+
+      document.getElementById('binary-string-out').textContent = bitString;
+      document.getElementById('binary-decimal-out').textContent = decimalVal;
+      document.getElementById('binary-formula-out').textContent =
+        activeValues.length > 0 ? `${activeValues.join(' + ')} = ${decimalVal}` : '0 = 0';
+
+      // Check against target
+      const statusBadge = document.getElementById('binary-challenge-status');
+      if (decimalVal === binaryTarget) {
+        statusBadge.className = 'px-3.5 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow-sm';
+        statusBadge.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Tepat! (${bitString} = ${binaryTarget})`;
+      } else {
+        statusBadge.className = 'px-3.5 py-1.5 rounded-xl bg-white border border-amber-200 text-xs font-bold text-amber-800';
+        statusBadge.textContent = `Saat ini: ${decimalVal} (Target: ${binaryTarget})`;
+      }
+    }
+
+    function toggleBinaryCard(idx) {
+      binaryStates[idx] = !binaryStates[idx];
+      renderBinaryCards();
+    }
+
+    function resetBinaryCards() {
+      binaryStates = [false, false, false, false, false];
+      renderBinaryCards();
+    }
+
+    function setBinaryTarget(num) {
+      binaryTarget = num;
+      document.getElementById('binary-challenge-text').innerHTML =
+        `Klik kartu di bawah agar membentuk bilangan desimal <span class="text-indigo-700 underline decoration-2 font-extrabold">${num}</span>!`;
+      renderBinaryCards();
+    }
+
+    function generateBinaryChallenge() {
+      const candidates = [5, 9, 11, 13, 14, 17, 19, 21, 22, 23, 25, 26, 27, 29, 30];
+      let next = candidates[Math.floor(Math.random() * candidates.length)];
+      if (next === binaryTarget) next = (next % 28) + 3;
+      setBinaryTarget(next);
+      showToast(`Tantangan baru: Bentuk angka desimal ${next}!`, 'info');
+    }
+
+    // =========================================================================
+    // 4. LAB 2: SIMULASI OPTIMASI WAKTU TUGAS PARALEL
+    // =========================================================================
+    const scheduleScenarios = {
+      rina: {
+        title: 'Kasus Rina (Soal PG No. 7)',
+        desc: 'Rina memiliki 3 tugas rumah: <strong>(1) Mencuci baju dengan mesin cuci otomatis (25 menit)</strong>, <strong>(2) Menyapu lantai (10 menit)</strong>, dan <strong>(3) Merapikan buku pelajaran (5 menit)</strong>. Karena mesin cuci bekerja otomatis tanpa perlu ditunggui, Rina dapat menyapu dan merapikan buku sambil menunggu mesin cuci selesai!',
+        optimalTime: 25,
+        maxScale: 40,
+        tasks: [
+          { id: 't1', name: 'Mencuci Baju (Mesin Otomatis)', duration: 25, start: 0, type: 'auto', color: 'bg-indigo-500' },
+          { id: 't2', name: 'Menyapu Lantai (Manual)', duration: 10, start: 25, type: 'manual', color: 'bg-emerald-500' },
+          { id: 't3', name: 'Merapikan Buku (Manual)', duration: 5, start: 35, type: 'manual', color: 'bg-amber-500' }
+        ],
+        validate: (tasks) => {
+          // Manual tasks (t2, t3) cannot overlap with each other
+          const t2 = tasks[1], t3 = tasks[2];
+          const manualOverlap = !(t2.start + t2.duration <= t3.start || t3.start + t3.duration <= t2.start);
+          const total = Math.max(...tasks.map(t => t.start + t.duration));
+          if (manualOverlap) {
+            return { ok: false, msg: '⚠️ Konflik Manusia: Rina tidak bisa menyapu dan merapikan buku pada menit yang bersamaan!' };
+          }
+          if (total === 25) {
+            return { ok: true, msg: '🎉 SEMPURNA! Waktu minimum 25 menit tercapai karena tugas manual dikerjakan paralel saat mesin cuci bekerja.' };
+          }
+          return { ok: false, msg: `Total waktu saat ini ${total} menit. Coba geser tugas manual ke rentang menit 0–25 agar selesai dalam 25 menit!` };
+        }
+      },
+      ibu: {
+        title: 'Kasus Ibu Menyiapkan Sarapan (Soal Uraian No. 41)',
+        desc: 'Ibu menyiapkan sarapan dengan 4 kegiatan: <strong>(1) Merebus air di ketel listrik (8 menit)</strong>, <strong>(2) Menggoreng telur (5 menit)</strong>, <strong>(3) Memotong buah (4 menit)</strong>, dan <strong>(4) Menyeduh teh (2 menit — syarat: hanya bisa dilakukan SETELAH air mendidih!)</strong>.',
+        optimalTime: 10,
+        maxScale: 20,
+        tasks: [
+          { id: 'b1', name: 'Merebus Air (Ketel Otomatis)', duration: 8, start: 0, type: 'auto', color: 'bg-indigo-500' },
+          { id: 'b2', name: 'Menggoreng Telur (Manual)', duration: 5, start: 8, type: 'manual', color: 'bg-emerald-500' },
+          { id: 'b3', name: 'Memotong Buah (Manual)', duration: 4, start: 13, type: 'manual', color: 'bg-amber-500' },
+          { id: 'b4', name: 'Menyeduh Teh (Setelah Air Mendidih)', duration: 2, start: 17, type: 'manual', color: 'bg-rose-500' }
+        ],
+        validate: (tasks) => {
+          const [air, telur, buah, teh] = tasks;
+          const total = Math.max(...tasks.map(t => t.start + t.duration));
+          // Check dependency: teh.start >= air.start + air.duration
+          if (teh.start < air.start + air.duration) {
+            return { ok: false, msg: `⚠️ Syarat Ketergantungan Dilanggar: Air baru mendidih di menit ke-${air.start + air.duration}, teh belum bisa diseduh pada menit ke-${teh.start}!` };
+          }
+          // Check manual tasks overlap: telur, buah, teh are all done by Ibu
+          const manuals = [telur, buah, teh];
+          for (let i = 0; i < manuals.length; i++) {
+            for (let j = i + 1; j < manuals.length; j++) {
+              const a = manuals[i], b = manuals[j];
+              if (!(a.start + a.duration <= b.start || b.start + b.duration <= a.start)) {
+                return { ok: false, msg: `⚠️ Konflik Tugas Manual: "${a.name}" dan "${b.name}" bertabrakan waktunya!` };
+              }
+            }
+          }
+          if (total === 10) {
+            return { ok: true, msg: '🎉 LUAR BIASA! Waktu minimum 10 menit tercapai (Menit 0–8 rebus air sambil goreng telur 5 mnt + potong buah 3 mnt, sisa buah & seduh teh hingga menit ke-10).' };
+          }
+          return { ok: false, msg: `Total waktu saat ini ${total} menit. Target optimal adalah 10 menit! Manfaatkan waktu 8 menit saat ketel listrik merebus air.` };
+        }
+      }
+    };
+
+    let currentScheduleKey = 'rina';
+    let currentScheduleState = JSON.parse(JSON.stringify(scheduleScenarios.rina));
+
+    function selectScheduleScenario(key) {
+      currentScheduleKey = key;
+      currentScheduleState = JSON.parse(JSON.stringify(scheduleScenarios[key]));
+
+      document.getElementById('btn-scen-rina').className = key === 'rina'
+        ? 'px-3.5 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow-sm'
+        : 'px-3.5 py-1.5 rounded-xl bg-white border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50';
+      document.getElementById('btn-scen-ibu').className = key === 'ibu'
+        ? 'px-3.5 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow-sm'
+        : 'px-3.5 py-1.5 rounded-xl bg-white border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50';
+
+      renderScheduleLab();
+    }
+
+    function updateTaskStart(idx, newStart) {
+      currentScheduleState.tasks[idx].start = parseInt(newStart, 10);
+      renderScheduleLab();
+    }
+
+    function renderScheduleLab() {
+      const scen = currentScheduleState;
+      document.getElementById('schedule-desc').innerHTML = scen.desc;
+      document.getElementById('schedule-optimal-time').textContent = `${scen.optimalTime} Menit`;
+
+      const controlsContainer = document.getElementById('schedule-tasks-container');
+      const barsContainer = document.getElementById('schedule-timeline-bars');
+      controlsContainer.innerHTML = '';
+      barsContainer.innerHTML = '';
+
+      scen.tasks.forEach((task, idx) => {
+        const maxStart = scen.maxScale - task.duration;
+        // Control Row
+        const ctrl = document.createElement('div');
+        ctrl.className = 'bg-slate-50 border border-slate-200 rounded-2xl p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3';
+        ctrl.innerHTML = `
+          <div class="flex items-center gap-2.5">
+            <span class="w-3.5 h-3.5 rounded-full ${task.color} shrink-0"></span>
+            <div>
+              <p class="text-xs sm:text-sm font-bold text-slate-800">${task.name}</p>
+              <p class="text-[11px] text-slate-500">Durasi: <strong>${task.duration} menit</strong> • Mulai menit ke-<strong>${task.start}</strong> s.d. ke-<strong>${task.start + task.duration}</strong></p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3 sm:w-64">
+            <span class="text-xs font-mono text-slate-400">0m</span>
+            <input type="range" min="0" max="${maxStart}" value="${task.start}" oninput="updateTaskStart(${idx}, this.value)" class="flex-1" />
+            <span class="text-xs font-mono text-slate-400">${maxStart}m</span>
+          </div>
+        `;
+        controlsContainer.appendChild(ctrl);
+
+        // Timeline Bar Row
+        const leftPct = (task.start / scen.maxScale) * 100;
+        const widthPct = (task.duration / scen.maxScale) * 100;
+        const barRow = document.createElement('div');
+        barRow.className = 'space-y-1';
+        barRow.innerHTML = `
+          <div class="flex justify-between text-[11px] text-slate-300">
+            <span>${task.name}</span>
+            <span class="font-mono">${task.start}–${task.start + task.duration} mnt</span>
+          </div>
+          <div class="w-full h-5 bg-slate-800 rounded-lg relative overflow-hidden border border-slate-700">
+            <div class="h-full ${task.color} rounded-md flex items-center justify-center text-[10px] font-bold text-white transition-all duration-150"
+                 style="margin-left: ${leftPct}%; width: ${widthPct}%;">
+              ${task.duration}m
+            </div>
+          </div>
+        `;
+        barsContainer.appendChild(barRow);
+      });
+
+      const totalTime = Math.max(...scen.tasks.map(t => t.start + t.duration));
+      document.getElementById('schedule-total-time').textContent = `${totalTime} Menit`;
+
+      const validation = scheduleScenarios[currentScheduleKey].validate(scen.tasks);
+      const fb = document.getElementById('schedule-feedback');
+      fb.textContent = validation.msg;
+      fb.className = validation.ok
+        ? 'rounded-xl p-3.5 text-xs sm:text-sm font-bold bg-emerald-950/90 text-emerald-300 border border-emerald-500/50'
+        : 'rounded-xl p-3.5 text-xs sm:text-sm font-semibold bg-slate-800 text-amber-200 border border-slate-700';
+    }
+
+    // =========================================================================
+    // 5. LAB 3: SIMULATOR HIERARKI FOLDER & EKSTENSI BERKAS
+    // =========================================================================
+    const initialLabFiles = [
+      { id: 'f1', name: 'Tugas_IPA.docx', ext: '.docx', targetFolder: 'Dokumen_Teks', icon: 'fa-file-word text-blue-600' },
+      { id: 'f2', name: 'Nilai_MTK.xlsx', ext: '.xlsx', targetFolder: 'Data_Angka', icon: 'fa-file-excel text-emerald-600' },
+      { id: 'f3', name: 'Poster_OSIS.jpg', ext: '.jpg', targetFolder: 'Dokumentasi_Gambar', icon: 'fa-file-image text-amber-600' },
+      { id: 'f4', name: 'Pidato_Bahasa.docx', ext: '.docx', targetFolder: 'Dokumen_Teks', icon: 'fa-file-word text-blue-600' },
+      { id: 'f5', name: 'Grafik_Sains.xlsx', ext: '.xlsx', targetFolder: 'Data_Angka', icon: 'fa-file-excel text-emerald-600' },
+      { id: 'f6', name: 'Foto_Lomba.jpg', ext: '.jpg', targetFolder: 'Dokumentasi_Gambar', icon: 'fa-file-image text-amber-600' },
+    ];
+
+    const labFolders = [
+      { id: 'Dokumen_Teks', label: 'Dokumen_Teks', hint: 'Untuk berkas pengolah kata (.docx)', color: 'blue' },
+      { id: 'Data_Angka', label: 'Data_Angka', hint: 'Untuk berkas pengolah angka (.xlsx)', color: 'emerald' },
+      { id: 'Dokumentasi_Gambar', label: 'Dokumentasi_Gambar', hint: 'Untuk berkas foto/gambar (.jpg)', color: 'amber' },
+    ];
+
+    let placedFiles = {}; // fileId -> folderId
+    let selectedFileId = null;
+
+    function resetFolderLab() {
+      placedFiles = {};
+      selectedFileId = null;
+      document.getElementById('active-file-path').textContent = 'D:\\Sekolah_Kelas7\\';
+      renderFolderLab();
+    }
+
+    function selectLabFile(fileId) {
+      selectedFileId = selectedFileId === fileId ? null : fileId;
+      const fileObj = initialLabFiles.find(f => f.id === fileId);
+      if (selectedFileId && fileObj) {
+        const folder = placedFiles[fileId] ? `${placedFiles[fileId]}\\` : '';
+        document.getElementById('active-file-path').textContent = `D:\\Sekolah_Kelas7\\${folder}${fileObj.name}`;
+      }
+      renderFolderLab();
+    }
+
+    function placeFileIntoFolder(folderId) {
+      if (!selectedFileId) {
+        document.getElementById('active-file-path').textContent = `D:\\Sekolah_Kelas7\\${folderId}\\`;
+        showToast('Pilih salah satu berkas terlebih dahulu sebelum mengklik folder tujuan!', 'warning');
+        return;
+      }
+      const fileObj = initialLabFiles.find(f => f.id === selectedFileId);
+      if (fileObj.targetFolder !== folderId) {
+        showToast(`Kurang tepat! Ekstensi ${fileObj.ext} pada "${fileObj.name}" tidak cocok untuk folder ${folderId}.`, 'error');
+        return;
+      }
+      placedFiles[selectedFileId] = folderId;
+      document.getElementById('active-file-path').textContent = `D:\\Sekolah_Kelas7\\${folderId}\\${fileObj.name}`;
+      showToast(`Berhasil! "${fileObj.name}" tersimpan di ${folderId}.`, 'success');
+      selectedFileId = null;
+      renderFolderLab();
+    }
+
+    function renderFolderLab() {
+      const unsortedEl = document.getElementById('unsorted-files-list');
+      const foldersEl = document.getElementById('target-folders-grid');
+      unsortedEl.innerHTML = '';
+      foldersEl.innerHTML = '';
+
+      const remaining = initialLabFiles.filter(f => !placedFiles[f.id]);
+      const placedCount = Object.keys(placedFiles).length;
+      document.getElementById('folder-progress-badge').textContent = `${placedCount} / 6 Berkas Terorganisir`;
+
+      if (remaining.length === 0) {
+        unsortedEl.innerHTML = `<div class="col-span-full text-center py-4 text-sm font-bold text-emerald-700"><i class="fa-solid fa-circle-check mr-1.5"></i> Semua 6 berkas berhasil dikelompokkan dengan benar!</div>`;
+      } else {
+        remaining.forEach(file => {
+          const isSelected = selectedFileId === file.id;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.onclick = () => selectLabFile(file.id);
+          btn.className = `flex items-center justify-between px-3.5 py-2.5 rounded-xl border text-left transition-all ${
+            isSelected
+              ? 'bg-indigo-600 text-white border-indigo-600 shadow-md ring-2 ring-indigo-300'
+              : 'bg-white text-slate-800 border-slate-200 hover:border-indigo-300'
+          }`;
+          btn.innerHTML = `
+            <span class="flex items-center gap-2.5 text-xs sm:text-sm font-bold truncate">
+              <i class="fa-solid ${isSelected ? 'fa-file text-white' : file.icon} text-base"></i>
+              <span class="truncate">${file.name}</span>
+            </span>
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded ${isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500'}">
+              ${file.ext}
+            </span>
+          `;
+          unsortedEl.appendChild(btn);
+        });
+      }
+
+      labFolders.forEach(folder => {
+        const filesInside = initialLabFiles.filter(f => placedFiles[f.id] === folder.id);
+        const card = document.createElement('div');
+        card.onclick = () => placeFileIntoFolder(folder.id);
+        card.className = `rounded-2xl border-2 p-4 cursor-pointer transition-all flex flex-col justify-between min-h-[175px] ${
+          selectedFileId
+            ? 'border-indigo-400 bg-indigo-50/40 hover:bg-indigo-50 shadow-sm'
+            : 'border-slate-200 bg-white hover:border-slate-300'
+        }`;
+
+        const listHtml = filesInside.length > 0
+          ? filesInside.map(f => `
+              <div class="flex items-center gap-2 text-xs font-semibold text-slate-700 bg-slate-50 px-2.5 py-1.5 rounded-lg border border-slate-200">
+                <i class="fa-solid ${f.icon}"></i>
+                <span class="truncate">${f.name}</span>
+              </div>
+            `).join('')
+          : `<div class="text-xs text-slate-400 italic py-4 text-center">Klik di sini untuk menyimpan berkas</div>`;
+
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center gap-2 text-amber-500 font-extrabold text-sm">
+              <i class="fa-solid fa-folder-open text-lg"></i>
+              <span class="text-slate-900 font-mono">${folder.label}</span>
+            </div>
+            <p class="text-[11px] text-slate-500 mt-0.5">${folder.hint}</p>
+            <div class="mt-3 space-y-1.5">
+              ${listHtml}
+            </div>
+          </div>
+          <div class="mt-3 pt-2 border-t border-slate-100 flex justify-between items-center text-[11px] font-bold text-slate-500">
+            <span>Isi Folder: ${filesInside.length} berkas</span>
+            ${selectedFileId ? '<span class="text-indigo-600">+ Simpan ke sini</span>' : ''}
+          </div>
+        `;
+        foldersEl.appendChild(card);
+      });
+    }
+
+    // =========================================================================
+    // 6. LAB 4: CAESAR CIPHER & PASSWORD STRENGTH METER
+    // =========================================================================
+    let cipherMode = 'encrypt';
+
+    function setCipherMode(mode) {
+      cipherMode = mode;
+      document.getElementById('btn-cipher-encrypt').className = mode === 'encrypt'
+        ? 'py-2 rounded-lg text-xs font-bold bg-indigo-600 text-white shadow-sm transition'
+        : 'py-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition';
+      document.getElementById('btn-cipher-decrypt').className = mode === 'decrypt'
+        ? 'py-2 rounded-lg text-xs font-bold bg-indigo-600 text-white shadow-sm transition'
+        : 'py-2 rounded-lg text-xs font-bold text-slate-600 hover:text-slate-900 transition';
+      updateCipher();
+    }
+
+    function loadCipherPreset(text, shift, mode) {
+      document.getElementById('cipher-input').value = text;
+      document.getElementById('cipher-shift-slider').value = shift;
+      setCipherMode(mode);
+    }
+
+    function updateCipher() {
+      const shift = parseInt(document.getElementById('cipher-shift-slider').value, 10);
+      const rawInput = document.getElementById('cipher-input').value.toUpperCase();
+      document.getElementById('cipher-shift-label').textContent = `${cipherMode === 'encrypt' ? '+' : '-'}${shift} Huruf`;
+
+      const effectiveShift = cipherMode === 'encrypt' ? shift : (26 - shift);
+      let result = '';
+      for (let i = 0; i < rawInput.length; i++) {
+        const code = rawInput.charCodeAt(i);
+        if (code >= 65 && code <= 90) {
+          const shifted = ((code - 65 + effectiveShift) % 26) + 65;
+          result += String.fromCharCode(shifted);
+        } else {
+          result += rawInput[i];
+        }
+      }
+      document.getElementById('cipher-output').textContent = result || '—';
+
+      // Render A-Z mapping
+      const mapEl = document.getElementById('cipher-alphabet-map');
+      mapEl.innerHTML = '';
+      for (let i = 0; i < 26; i++) {
+        const orig = String.fromCharCode(65 + i);
+        const mapped = String.fromCharCode(((i + effectiveShift) % 26) + 65);
+        const isUsed = rawInput.includes(orig);
+        const cell = document.createElement('div');
+        cell.className = `p-1 rounded ${isUsed ? 'bg-indigo-600 text-white font-bold' : 'bg-white text-slate-600 border border-slate-200'}`;
+        cell.innerHTML = `<div>${orig}</div><div class="text-[10px] opacity-75">↓</div><div>${mapped}</div>`;
+        mapEl.appendChild(cell);
+      }
+    }
+
+    function testPwdPreset(pwd) {
+      document.getElementById('pwd-input').value = pwd;
+      checkPasswordStrength();
+    }
+
+    function checkPasswordStrength() {
+      const pwd = document.getElementById('pwd-input').value;
+      const rules = [
+        { id: 'chk-len', pass: pwd.length >= 8, label: 'Minimal 8 karakter' },
+        { id: 'chk-upper', pass: /[A-Z]/.test(pwd), label: 'Mengandung Huruf Kapital (A-Z)' },
+        { id: 'chk-lower', pass: /[a-z]/.test(pwd), label: 'Mengandung Huruf Kecil (a-z)' },
+        { id: 'chk-num', pass: /[0-9]/.test(pwd), label: 'Mengandung Angka (0-9)' },
+        { id: 'chk-sym', pass: /[^A-Za-z0-9]/.test(pwd), label: 'Mengandung Simbol Khusus (!@#$%)' },
+      ];
+
+      let score = 0;
+      rules.forEach(r => {
+        if (r.pass) score++;
+        const el = document.getElementById(r.id);
+        el.className = r.pass
+          ? 'flex items-center gap-2 text-emerald-700 font-semibold'
+          : 'flex items-center gap-2 text-slate-400';
+        el.innerHTML = `<i class="fa-solid ${r.pass ? 'fa-circle-check text-emerald-600' : 'fa-circle-xmark'}"></i> ${r.label}`;
+      });
+
+      const bar = document.getElementById('pwd-strength-bar');
+      const label = document.getElementById('pwd-strength-label');
+      const pct = (score / 5) * 100;
+      bar.style.width = `${pct}%`;
+
+      if (score <= 2) {
+        bar.className = 'h-full bg-rose-500 transition-all duration-300';
+        label.className = 'text-rose-600 font-extrabold';
+        label.textContent = 'Lemah (Mudah Ditebak)';
+      } else if (score <= 4) {
+        bar.className = 'h-full bg-amber-500 transition-all duration-300';
+        label.className = 'text-amber-600 font-extrabold';
+        label.textContent = 'Sedang (Perlu Simbol/Kombinasi)';
+      } else {
+        bar.className = 'h-full bg-emerald-500 transition-all duration-300';
+        label.className = 'text-emerald-600 font-extrabold';
+        label.textContent = 'Sangat Kuat (Aman)';
+      }
+    }
+
+    // =========================================================================
+    // 7. MODE 2: RINGKASAN MATERI & KISI-KISI PER BAB
+    // =========================================================================
+    const chaptersData = [
+      {
+        id: 'bab1',
+        badge: 'Bab I • Berpikir Komputasional (PG No. 1–10 | Uraian No. 41–43)',
+        title: 'Berpikir Komputasional (Computational Thinking)',
+        color: 'indigo',
+        summary: 'Cara berpikir sistematis dan logis untuk memecahkan masalah kompleks menjadi langkah-langkah yang dapat dijalankan oleh manusia maupun komputer.',
+        topics: [
+          {
+            subtitle: '4 Pilar Berpikir Komputasional (Soal No. 1, 2, 3, 43)',
+            points: [
+              '<strong>Dekomposisi:</strong> Memecah masalah besar/kompleks menjadi sub-masalah yang lebih kecil agar mudah ditangani (contoh: membagi kepanitiaan lomba ke seksi acara, konsumsi, perlengkapan).',
+              '<strong>Pengenalan Pola (Pattern Recognition):</strong> Mencari kesamaan atau keteraturan dari data/kejadian (contoh: deret angka 3, 7, 15, 31, 63 memiliki pola dikali 2 lalu ditambah 1).',
+              '<strong>Abstraksi:</strong> Menyaring informasi penting yang relevan dan mengabaikan detail yang tidak perlu (contoh: membuat peta jalur bus kota dengan menghilangkan detail warna rumah dan bentuk pohon).',
+              '<strong>Algoritma:</strong> Menyusun langkah-langkah penyelesaian masalah secara logis, berurutan, dan sistematis dari awal hingga akhir.'
+            ]
+          },
+          {
+            subtitle: 'Representasi Data Biner & Optimasi Jadwal (Soal No. 4–7, 41–42)',
+            points: [
+              '<strong>Bilangan Biner (Basis 2):</strong> Komputer hanya mengenal angka 0 (mati/tertutup) dan 1 (nyala/terbuka). Nilai posisi 5 kartu titik dari kiri ke kanan adalah <strong>16 - 8 - 4 - 2 - 1</strong>.',
+              '<strong>Penjadwalan Paralel:</strong> Mengeksekusi pekerjaan manual secara bersamaan saat pekerjaan mesin/otomatis sedang berlangsung untuk meminimalkan total waktu.'
+            ]
+          },
+          {
+            subtitle: 'Struktur Data: List (Daftar) & Himpunan (Soal No. 8–10)',
+            points: [
+              '<strong>List (Daftar Berurut):</strong> Menyimpan data secara berurutan di mana posisi/indeks sangat diperhatikan (contoh: antrean nomor urut pelayanan atau daftar peringkat juara 1, 2, 3).',
+              '<strong>Himpunan (Set):</strong> Kumpulan objek unik tanpa pengulangan/duplikasi dan tidak mementingkan urutan.'
+            ]
+          }
+        ]
+      },
+      {
+        id: 'bab2',
+        badge: 'Bab II • Teknologi Informasi & Komunikasi (PG No. 11–20 | Uraian No. 44–45)',
+        title: 'Teknologi Informasi dan Komunikasi (TIK) & Literasi Digital',
+        color: 'emerald',
+        summary: 'Pemanfaatan aplikasi perkantoran, pengelolaan berkas digital secara terstruktur, pencarian informasi efektif, serta etika komunikasi daring.',
+        topics: [
+          {
+            subtitle: 'Antarmuka Pengguna: GUI vs CLI (Soal No. 11–12)',
+            points: [
+              '<strong>GUI (Graphical User Interface):</strong> Antarmuka berbasis visual grafis (ikon, tombol, jendela, menu) yang ramah pengguna pemula.',
+              '<strong>CLI (Command Line Interface):</strong> Antarmuka berbasis teks yang mengoperasikan komputer dengan mengetikkan baris perintah.'
+            ]
+          },
+          {
+            subtitle: 'Manajemen Berkas, Ekstensi & Path (Soal No. 13–15, 44)',
+            points: [
+              '<strong>Ekstensi Berkas:</strong> Akhiran nama file yang menandakan jenis aplikasi pembukanya: <code>.docx</code> (dokumen teks/Word), <code>.xlsx</code> (lembar kerja/Excel), <code>.pptx</code> (presentasi), <code>.jpg/.png</code> (gambar), <code>.mp4</code> (video).',
+              '<strong>Hierarki Folder & Path:</strong> Menyusun folder induk dan sub-folder memudahkan pencarian. Contoh jalur alamat lengkap: <code>D:\\Sekolah_Kelas7\\Dokumen_Teks\\Tugas_IPA.docx</code>.'
+            ]
+          },
+          {
+            subtitle: 'Peramban, Mesin Pencari, CMS & Surel (Soal No. 16–20, 45)',
+            points: [
+              '<strong>Web Browser vs Search Engine:</strong> Browser (Chrome, Firefox, Edge) adalah aplikasi untuk membuka halaman web; Search Engine (Google, Bing) adalah situs layanan pencari informasi.',
+              '<strong>Operator Pencarian:</strong> Tanda kutip ganda (<code>"..."</code>) mencari frasa persis; tanda minus (<code>-</code>) mengecualikan kata tertentu.',
+              '<strong>Etika Surel (Email):</strong> Gunakan <strong>To</strong> untuk penerima utama, <strong>Cc</strong> untuk tembusan terbuka, dan <strong>Bcc (Blind Carbon Copy)</strong> untuk merahasiakan daftar alamat email penerima massal.'
+            ]
+          }
+        ]
+      },
+      {
+        id: 'bab3',
+        badge: 'Bab III • Sistem Komputer (PG No. 21–30 | Uraian No. 46–47)',
+        title: 'Sistem Komputer (Hardware, Software & Brainware)',
+        color: 'amber',
+        summary: 'Sinergi antara perangkat keras, perangkat lunak, dan pengguna dalam siklus pemrosesan data digital.',
+        topics: [
+          {
+            subtitle: 'Komponen Utama Sistem Komputer (Soal No. 21–24, 46)',
+            points: [
+              '<strong>Hardware (Perangkat Keras):</strong> Komponen fisik komputer yang dapat disentuh (Keyboard, Mouse, Monitor, CPU, RAM).',
+              '<strong>Software (Perangkat Lunak):</strong> Program/instruksi digital. Dibagi menjadi <em>Sistem Operasi</em> (Windows, Linux, macOS, Android) dan <em>Perangkat Lunak Aplikasi</em> (MS Word, Browser).',
+              '<strong>Brainware (Pengguna):</strong> Manusia yang mengoperasikan, merancang, atau memelihara sistem komputer.'
+            ]
+          },
+          {
+            subtitle: 'Siklus Pengolahan Data & Arsitektur CPU (Soal No. 25–28, 47)',
+            points: [
+              '<strong>Siklus IPOS:</strong> <em>Input</em> (masukan via keyboard/scanner) → <em>Process</em> (diolah oleh CPU) → <em>Storage</em> (disimpan di memori) → <em>Output</em> (ditampilkan di monitor/printer).',
+              '<strong>Bagian CPU:</strong> <strong>ALU (Arithmetic Logic Unit)</strong> melakukan operasi hitung aritmatika & logika; <strong>CU (Control Unit)</strong> mengatur lalu lintas instruksi.',
+              '<strong>RAM vs SSD/HDD:</strong> <strong>RAM</strong> bersifat <em>volatile</em> (data hilang saat listrik mati, menyimpan proses aktif sementara); <strong>SSD/HDD</strong> bersifat <em>non-volatile</em> (penyimpanan permanen).'
+            ]
+          },
+          {
+            subtitle: 'Satuan Memori Digital & Pemecahan Masalah (Soal No. 29–30)',
+            points: [
+              '<strong>Bit & Byte:</strong> 1 Byte = 8 Bit. Urutan kapasitas: Byte → Kilobyte (KB) → Megabyte (MB) → Gigabyte (GB) → Terabyte (TB).',
+              '<strong>Troubleshooting Dasar:</strong> Jika aplikasi macet total (Not Responding), gunakan <strong>Task Manager</strong> (Ctrl + Shift + Esc) untuk menghentikan paksa (End Task) aplikasi tersebut.'
+            ]
+          }
+        ]
+      },
+      {
+        id: 'bab4',
+        badge: 'Bab IV • Jaringan Komputer & Internet (PG No. 31–40 | Uraian No. 48–50)',
+        title: 'Jaringan Komputer, Internet & Keamanan Siber',
+        color: 'purple',
+        summary: 'Cara perangkat saling terhubung, bertukar paket data, berkomunikasi nirkabel, serta melindungi privasi dan keamanan informasi.',
+        topics: [
+          {
+            subtitle: 'Jenis Jaringan & Perangkat Keras Jaringan (Soal No. 31–34, 48)',
+            points: [
+              '<strong>LAN vs Internet:</strong> <strong>LAN (Local Area Network)</strong> mencakup area lokal terbatas (lab komputer, satu gedung); <strong>Internet</strong> adalah jaringan global yang menghubungkan jutaan jaringan di seluruh dunia.',
+              '<strong>Router & Switch:</strong> <em>Switch</em> menghubungkan perangkat dalam satu LAN; <em>Router</em> menghubungkan dua atau lebih jaringan berbeda (misal LAN sekolah ke Internet) serta menentukan rute terbaik.',
+              '<strong>IP Address & Packet Switching:</strong> Setiap perangkat memiliki alamat unik (IP Address). Data besar dipecah menjadi potongan kecil bernama <strong>paket (packets)</strong> yang dikirim terpisah lalu disusun kembali di tujuan.'
+            ]
+          },
+          {
+            subtitle: 'Konektivitas Nirkabel & Tethering (Soal No. 35–36)',
+            points: [
+              '<strong>Bluetooth vs Wi-Fi:</strong> Bluetooth hemat daya untuk jarak dekat antarperangkat pribadi; Wi-Fi memiliki jangkauan lebih luas dan kecepatan transfer jauh lebih tinggi.',
+              '<strong>Tethering (Hotspot):</strong> Berbagi koneksi internet seluler ponsel ke perangkat lain melalui Wi-Fi, Bluetooth, atau kabel USB.'
+            ]
+          },
+          {
+            subtitle: 'Keamanan Data, HTTPS, Enkripsi & Kata Sandi (Soal No. 37–40, 49–50)',
+            points: [
+              '<strong>HTTP vs HTTPS:</strong> HTTPS dilengkapi protokol keamanan enkripsi SSL/TLS (ikon gembok) untuk melindungi data sensitif saat transaksi daring.',
+              '<strong>Enkripsi Caesar Cipher:</strong> Menggeser setiap huruf alfabet sejauh nilai kunci tertentu (contoh kunci +3: A→D, D→G, I→L).',
+              '<strong>Kata Sandi Kuat:</strong> Panjang minimal 8 karakter, memadukan huruf kapital, huruf kecil, angka, dan simbol khusus, serta tidak menggunakan tanggal lahir atau nama pribadi.'
+            ]
+          }
+        ]
+      }
+    ];
+
+    function renderMateriAccordions() {
+      const container = document.getElementById('materi-accordion-container');
+      container.innerHTML = '';
+
+      chaptersData.forEach((chap, index) => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden';
+
+        const topicsHtml = chap.topics.map(t => `
+          <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 space-y-2">
+            <h4 class="font-extrabold text-slate-900 text-sm sm:text-base flex items-center gap-2">
+              <i class="fa-solid fa-bookmark text-indigo-600 text-xs"></i>
+              ${t.subtitle}
+            </h4>
+            <ul class="space-y-1.5 text-xs sm:text-sm text-slate-700 leading-relaxed list-disc pl-5">
+              ${t.points.map(p => `<li>${p}</li>`).join('')}
+            </ul>
+          </div>
+        `).join('');
+
+        card.innerHTML = `
+          <button type="button" onclick="toggleSingleAccordion('${chap.id}')" class="w-full px-6 py-5 text-left flex items-center justify-between gap-4 hover:bg-slate-50/80 transition">
+            <div>
+              <span class="inline-block text-xs font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 mb-1.5">
+                ${chap.badge}
+              </span>
+              <h3 class="text-lg sm:text-xl font-extrabold text-slate-900">${chap.title}</h3>
+              <p class="text-xs sm:text-sm text-slate-500 mt-1">${chap.summary}</p>
+            </div>
+            <div id="icon-${chap.id}" class="w-9 h-9 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center shrink-0 transition-transform duration-200 ${index === 0 ? 'rotate-180' : ''}">
+              <i class="fa-solid fa-chevron-down"></i>
+            </div>
+          </button>
+          <div id="body-${chap.id}" class="${index === 0 ? '' : 'hidden'} px-6 pb-6 pt-2 border-t border-slate-100 space-y-3">
+            ${topicsHtml}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function toggleSingleAccordion(id) {
+      const body = document.getElementById(`body-${id}`);
+      const icon = document.getElementById(`icon-${id}`);
+      body.classList.toggle('hidden');
+      icon.classList.toggle('rotate-180');
+    }
+
+    function toggleAllAccordions(open) {
+      chaptersData.forEach(c => {
+        const body = document.getElementById(`body-${c.id}`);
+        const icon = document.getElementById(`icon-${c.id}`);
+        if (open) {
+          body.classList.remove('hidden');
+          icon.classList.add('rotate-180');
+        } else {
+          body.classList.add('hidden');
+          icon.classList.remove('rotate-180');
+        }
+      });
+    }
+
+    // =========================================================================
+    // 8. MODE 3: BANK SOAL LENGKAP (40 PILIHAN GANDA + 10 URAIAN)
+    // =========================================================================
+    const pgQuestions = [
+      // BAB I: BERPIKIR KOMPUTASIONAL (1-10)
+      {
+        no: 1, bab: 'Bab I',
+        q: 'OSIS SMP Al-Akhyar akan menyelenggarakan acara peringatan Hari Pahlawan. Agar persiapan berjalan lancar, ketua panitia membagi tugas ke dalam beberapa seksi, yaitu seksi acara, seksi perlengkapan, seksi konsumsi, dan seksi dokumentasi. Penerapan pilar berpikir komputasional yang dilakukan ketua panitia tersebut adalah ....',
+        opts: ['Abstraksi', 'Dekomposisi', 'Pengenalan pola', 'Algoritma'],
+        ans: 1,
+        exp: 'Dekomposisi adalah proses memecah masalah besar dan kompleks (penyelenggaraan acara) menjadi bagian-bagian kecil yang lebih mudah dikelola (seksi acara, perlengkapan, konsumsi, dokumentasi).'
+      },
+      {
+        no: 2, bab: 'Bab I',
+        q: 'Perhatikan barisan bilangan berikut: 3, 7, 15, 31, 63, .... Dengan menggunakan teknik pengenalan pola, bilangan selanjutnya yang tepat untuk melengkapi barisan tersebut adalah ....',
+        opts: ['95', '126', '127', '128'],
+        ans: 2,
+        exp: 'Pola yang terbentuk adalah setiap bilangan dikali 2 lalu ditambah 1: (3×2)+1=7, (7×2)+1=15, (15×2)+1=31, (31×2)+1=63. Maka angka berikutnya adalah (63×2)+1 = 127.'
+      },
+      {
+        no: 3, bab: 'Bab I',
+        q: 'Seorang petugas dinas perhubungan membuat peta jalur lintasan bus kota untuk memudahkan penumpang. Dalam peta tersebut, ia hanya menampilkan garis rute, nama halte, dan titik persimpangan jalan raya, sedangkan gambar pepohonan, warna cat rumah warga, dan bentuk gedung dihilangkan. Proses penyaringan informasi ini disebut ....',
+        opts: ['Dekomposisi', 'Algoritma', 'Abstraksi', 'Evaluasi'],
+        ans: 2,
+        exp: 'Abstraksi adalah berfokus pada informasi yang penting dan relevan (rute, halte, persimpangan) serta mengabaikan detail yang tidak diperlukan (pepohonan, warna rumah).'
+      },
+      {
+        no: 4, bab: 'Bab I',
+        q: 'Dalam aktivitas Unplugged Computing menggunakan 5 buah kartu titik biner yang bernilai 16, 8, 4, 2, dan 1 dari kiri ke kanan, susunan kartu yang terbuka dan tertutup untuk merepresentasikan bilangan desimal 22 adalah ....',
+        opts: ['Terbuka – Tertutup – Terbuka – Terbuka – Tertutup (10110)', 'Terbuka – Terbuka – Tertutup – Terbuka – Tertutup (11010)', 'Terbuka – Tertutup – Terbuka – Tertutup – Terbuka (10101)', 'Tertutup – Terbuka – Terbuka – Terbuka – Tertutup (01110)'],
+        ans: 0,
+        exp: 'Untuk mendapatkan 22 dari kartu (16, 8, 4, 2, 1), kita membuka kartu 16 + 4 + 2 = 22. Maka status kartu dari kiri ke kanan adalah Terbuka (1), Tertutup (0), Terbuka (1), Terbuka (1), Tertutup (0) → 10110.'
+      },
+      {
+        no: 5, bab: 'Bab I',
+        q: 'Jika susunan 5 kartu titik biner dari kiri ke kanan menunjukkan status Tertutup – Terbuka – Tertutup – Terbuka – Terbuka (01011), maka nilai bilangan desimal yang diwakilinya adalah ....',
+        opts: ['11', '13', '19', '22'],
+        ans: 0,
+        exp: 'Kode biner 01011 berarti kartu yang terbuka adalah 8, 2, dan 1. Penjumlahannya: 8 + 2 + 1 = 11.'
+      },
+      {
+        no: 6, bab: 'Bab I',
+        q: 'Perhatikan potongan langkah algoritma berikut:\n1) Masukkan nilai panjang dan lebar\n2) Hitung Luas = panjang × lebar\n3) Jika Luas > 50, tampilkan pesan "Ruangan Luas"\n4) Jika tidak, tampilkan pesan "Ruangan Standar"\nJika pengguna memasukkan nilai panjang = 8 dan lebar = 6, keluaran yang dihasilkan adalah ....',
+        opts: ['48', 'Ruangan Luas', 'Ruangan Standar', 'Error karena nilai terlalu kecil'],
+        ans: 2,
+        exp: 'Luas = 8 × 6 = 48. Karena 48 tidak lebih besar dari 50 (48 ≤ 50), kondisi langkah ke-3 bernilai salah sehingga program menjalankan langkah ke-4 dan menampilkan "Ruangan Standar".'
+      },
+      {
+        no: 7, bab: 'Bab I',
+        q: 'Rina memiliki 3 tugas rumah: mencuci baju menggunakan mesin cuci otomatis (25 menit), menyapu lantai (10 menit), dan merapikan buku pelajaran (5 menit). Jika Rina dapat mengerjakan tugas lain sambil menunggu mesin cuci bekerja otomatis, waktu minimum yang dibutuhkan Rina untuk menyelesaikan seluruh tugas tersebut adalah ....',
+        opts: ['40 menit', '35 menit', '30 menit', '25 menit'],
+        ans: 3,
+        exp: 'Karena mesin cuci berjalan otomatis selama 25 menit, Rina dapat menyapu (10 menit) dan merapikan buku (5 menit) secara paralel di dalam rentang 25 menit tersebut. Jadi total waktu minimum adalah 25 menit.'
+      },
+      {
+        no: 8, bab: 'Bab I',
+        q: 'Dalam struktur data informatika, konsep penyimpanan elemen secara berurutan di mana posisi (indeks) setiap elemen sangat diperhatikan dan diperbolehkan adanya data yang sama disebut ....',
+        opts: ['Himpunan (Set)', 'List (Daftar)', 'Graf (Graph)', 'Pohon (Tree)'],
+        ans: 1,
+        exp: 'List (daftar) adalah struktur data linear yang menyimpan kumpulan elemen secara terurut berdasarkan indeks dan mengizinkan nilai duplikat.'
+      },
+      {
+        no: 9, bab: 'Bab I',
+        q: 'Manakah di antara kasus kehidupan sehari-hari berikut yang paling tepat direpresentasikan menggunakan struktur data List (Daftar Berurut)?',
+        opts: ['Kumpulan jenis buah-buahan yang dijual di pasar', 'Daftar nomor antrean pasien di klinik kesehatan', 'Kumpulan siswa yang hobi bermain sepak bola', 'Daftar mata pelajaran yang diujikan pada semester ganjil'],
+        ans: 1,
+        exp: 'Nomor antrean pasien sangat bergantung pada urutan kedatangan (indeks pertama dilayani lebih dulu), sehingga paling tepat menggunakan struktur data List.'
+      },
+      {
+        no: 10, bab: 'Bab I',
+        q: 'Diketahui Himpunan A = {Informatika, Matematika, IPA, Bahasa Inggris} dan Himpunan B = {IPA, IPS, Seni Budaya, Informatika}. Irisan dari himpunan A dan B (A ∩ B) adalah ....',
+        opts: ['{Matematika, IPS}', '{Informatika, IPA}', '{Informatika, Matematika, IPA, IPS, Seni Budaya, Bahasa Inggris}', '{Bahasa Inggris, Seni Budaya}'],
+        ans: 1,
+        exp: 'Irisan (A ∩ B) berisi elemen yang sama-sama menjadi anggota Himpunan A dan Himpunan B, yaitu {Informatika, IPA}.'
+      },
+
+      // BAB II: TIK & LITERASI DIGITAL (11-20)
+      {
+        no: 11, bab: 'Bab II',
+        q: 'Sistem operasi modern menggunakan antarmuka yang memudahkan pengguna berinteraksi melalui ikon, tombol, menu, dan jendela grafis menggunakan tetikus (mouse) atau layar sentuh. Jenis antarmuka ini dikenal dengan istilah ....',
+        opts: ['Command Line Interface (CLI)', 'Graphical User Interface (GUI)', 'Voice User Interface (VUI)', 'Text-Based Interface (TBI)'],
+        ans: 1,
+        exp: 'GUI (Graphical User Interface) memungkinkan pengguna berinteraksi secara visual melalui ikon, tombol, dan jendela grafis.'
+      },
+      {
+        no: 12, bab: 'Bab II',
+        q: 'Perbedaan mendasar antara pengoperasian komputer berbasis CLI dan GUI terletak pada ....',
+        opts: ['CLI hanya dapat digunakan pada ponsel pintar, sedangkan GUI hanya pada komputer meja', 'CLI menggunakan perintah teks yang diketikkan melalui papan ketik, sedangkan GUI menggunakan elemen visual grafis', 'CLI membutuhkan spesifikasi kartu grafis yang sangat tinggi dibandingkan GUI', 'GUI tidak memerlukan sistem operasi untuk menjalankan aplikasi perkantoran'],
+        ans: 1,
+        exp: 'CLI (Command Line Interface) mengandalkan input perintah berbasis teks, sedangkan GUI menggunakan representasi visual grafis.'
+      },
+      {
+        no: 13, bab: 'Bab II',
+        q: 'Dina menemukan sebuah berkas di dalam flashdisk gurunya bernama Modul_Praktikum.xlsx. Berdasarkan ekstensi berkas tersebut, aplikasi yang paling tepat digunakan Dina untuk membuka dan mengolahnya adalah ....',
+        opts: ['Aplikasi pengolah kata (Microsoft Word)', 'Aplikasi pengolah angka (Microsoft Excel)', 'Aplikasi pengolah presentasi (Microsoft PowerPoint)', 'Aplikasi pemutar media video (VLC Media Player)'],
+        ans: 1,
+        exp: 'Ekstensi .xlsx merupakan format standar berkas lembar kerja (spreadsheet) yang dibuat menggunakan aplikasi pengolah angka seperti Microsoft Excel.'
+      },
+      {
+        no: 14, bab: 'Bab II',
+        q: 'Perhatikan jalur direktori (path) berikut: D:\\Tugas_Sekolah\\Semester_1\\Informatika\\Laporan_Observasi.docx. Berdasarkan jalur tersebut, folder induk langsung tempat berkas Laporan_Observasi.docx berada adalah ....',
+        opts: ['Drive D:', 'Tugas_Sekolah', 'Semester_1', 'Informatika'],
+        ans: 3,
+        exp: 'Dalam struktur path D:\\Tugas_Sekolah\\Semester_1\\Informatika\\Laporan_Observasi.docx, folder yang langsung menaungi file tersebut adalah folder terakhir sebelum nama file, yaitu Informatika.'
+      },
+      {
+        no: 15, bab: 'Bab II',
+        q: 'Tujuan utama mengelompokkan berkas-berkas digital ke dalam struktur folder dan sub-folder yang terorganisir adalah ....',
+        opts: ['Memperbesar kapasitas penyimpanan hard disk secara otomatis', 'Mempercepat koneksi internet saat mengunduh berkas baru', 'Memudahkan pencarian, pengelolaan, dan pencadangan berkas di kemudian hari', 'Melindungi komputer dari serangan virus perangkat keras'],
+        ans: 2,
+        exp: 'Pengorganisasian folder yang terstruktur membuat pencarian, pengelolaan, serta pencadangan (backup) file menjadi cepat dan sistematis.'
+      },
+      {
+        no: 16, bab: 'Bab II',
+        q: 'Manakah pernyataan yang paling tepat membedakan antara peramban web (web browser) dan mesin pencari (search engine)?',
+        opts: ['Google Chrome adalah mesin pencari, sedangkan Google Search adalah peramban web', 'Peramban web adalah perangkat lunak untuk mengakses situs web, sedangkan mesin pencari adalah layanan web untuk menemukan informasi berdasarkan kata kunci', 'Peramban web hanya bekerja secara luring (offline), sedangkan mesin pencari bekerja secara daring (online)', 'Keduanya merupakan komponen perangkat keras jaringan komputer'],
+        ans: 1,
+        exp: 'Web browser (seperti Chrome, Firefox, Edge) adalah aplikasi klien untuk menampilkan halaman web, sedangkan search engine (seperti Google, Bing) adalah layanan situs web untuk mencari informasi.'
+      },
+      {
+        no: 17, bab: 'Bab II',
+        q: 'Budi ingin mencari artikel di internet yang membahas secara spesifik tentang sejarah komputer tanpa memunculkan hasil yang berkaitan dengan telepon pintar. Kata kunci pencarian yang paling efektif digunakan Budi pada mesin pencari adalah ....',
+        opts: ['"sejarah komputer" +telepon pintar', '"sejarah komputer" -ponsel -smartphone', 'sejarah OR komputer OR ponsel', 'sejarah * komputer ? ponsel'],
+        ans: 1,
+        exp: 'Tanda kutip ("...") mencari frasa persis "sejarah komputer", sedangkan tanda minus (-) mengecualikan kata yang tidak diinginkan (-ponsel -smartphone).'
+      },
+      {
+        no: 18, bab: 'Bab II',
+        q: 'Platform daring seperti WordPress dan Blogger sering dimanfaatkan siswa maupun guru untuk mempublikasikan artikel edukasi secara terstruktur tanpa harus menulis kode pemrograman dari awal. Platform semacam ini termasuk dalam kategori ....',
+        opts: ['Sistem Operasi Jaringan', 'Content Management System (CMS)', 'Database Management System (DBMS)', 'Antivirus Cloud System'],
+        ans: 1,
+        exp: 'CMS (Content Management System) adalah perangkat lunak berbasis web yang memudahkan pembuatan, pengelolaan, dan publikasi konten digital secara visual.'
+      },
+      {
+        no: 19, bab: 'Bab II',
+        q: 'Seorang wali kelas ingin mengirimkan surat pemberitahuan melalui surel (email) kepada 35 orang tua siswa sekaligus. Namun, demi menjaga privasi data pribadi, setiap orang tua tidak boleh melihat alamat surel milik orang tua lainnya. Fitur kolom penerima surel yang harus digunakan wali kelas adalah ....',
+        opts: ['To (Kepada)', 'Cc (Carbon Copy)', 'Bcc (Blind Carbon Copy)', 'Subject (Subjek)'],
+        ans: 2,
+        exp: 'Bcc (Blind Carbon Copy) mengirimkan salinan email kepada banyak penerima tanpa memperlihatkan daftar alamat email penerima satu sama lain.'
+      },
+      {
+        no: 20, bab: 'Bab II',
+        q: 'Sebelum membagikan sebuah informasi berita yang diterima melalui grup pesan instan kepada teman-teman sekelas, langkah literasi digital yang paling bijak dilakukan adalah ....',
+        opts: ['Segera meneruskannya agar menjadi orang pertama yang menyebarkan berita', 'Memeriksa kebenaran sumber berita dan membandingkannya dengan media resmi yang kredibel', 'Mengubah judul berita agar terlihat lebih menarik perhatian pembaca', 'Menghapus nama pengirim asli lalu membagikannya ke seluruh media sosial'],
+        ans: 1,
+        exp: 'Verifikasi fakta (cek silang sumber resmi) adalah prinsip utama literasi digital untuk mencegah penyebaran informasi palsu (hoaks).'
+      },
+
+      // BAB III: SISTEM KOMPUTER (21-30)
+      {
+        no: 21, bab: 'Bab III',
+        q: 'Sistem komputer dapat bekerja menjalankan fungsinya apabila terdapat tiga elemen utama yang saling berinteraksi, yaitu ....',
+        opts: ['Monitor, CPU, dan Printer', 'Hardware, Software, dan Brainware', 'Input, Storage, dan Output', 'Windows, Linux, dan macOS'],
+        ans: 1,
+        exp: 'Tiga komponen utama sistem komputer adalah Hardware (perangkat keras), Software (perangkat lunak), dan Brainware (pengguna).'
+      },
+      {
+        no: 22, bab: 'Bab III',
+        q: 'Perhatikan daftar perangkat komputer berikut:\n(1) Scanner\n(2) Proyektor LCD\n(3) Mikrofon\n(4) Speaker\n(5) Webcam\nPerangkat yang termasuk ke dalam kelompok perangkat masukan (input device) ditunjukkan oleh nomor ....',
+        opts: ['(1), (2), dan (3)', '(1), (3), dan (5)', '(2), (3), dan (4)', '(2), (4), dan (5)'],
+        ans: 1,
+        exp: 'Scanner (1), Mikrofon (3), dan Webcam (5) berfungsi memasukkan data (gambar, suara, video) ke dalam komputer. Proyektor dan Speaker adalah perangkat keluaran (output).'
+      },
+      {
+        no: 23, bab: 'Bab III',
+        q: 'Di dalam unit pemroses pusat (CPU), terdapat bagian yang secara khusus bertugas melakukan perhitungan aritmatika (penjumlahan, pengurangan) serta operasi perbandingan logika. Bagian CPU tersebut adalah ....',
+        opts: ['Control Unit (CU)', 'Arithmetic Logic Unit (ALU)', 'Register Cache', 'Power Supply Unit (PSU)'],
+        ans: 1,
+        exp: 'ALU (Arithmetic Logic Unit) adalah bagian inti dalam prosesor yang mengeksekusi operasi perhitungan matematis dan logika.'
+      },
+      {
+        no: 24, bab: 'Bab III',
+        q: 'Perbedaan utama antara memori RAM (Random Access Memory) dan media penyimpanan SSD (Solid State Drive) adalah ....',
+        opts: ['RAM menyimpan data secara permanen, sedangkan SSD menghapus data saat komputer dimatikan', 'RAM bersifat sementara (volatile) untuk menyimpan data proses aktif, sedangkan SSD bersifat permanen (non-volatile)', 'RAM memiliki kapasitas jauh lebih besar daripada SSD pada umumnya', 'SSD hanya digunakan untuk memproses grafis permainan, sedangkan RAM untuk menyimpan sistem operasi'],
+        ans: 1,
+        exp: 'RAM bersifat volatile (isinya hilang saat aliran listrik terputus), sedangkan SSD bersifat non-volatile sehingga menyimpan data secara permanen.'
+      },
+      {
+        no: 25, bab: 'Bab III',
+        q: 'Manakah di antara perangkat lunak berikut yang berfungsi mengelola seluruh sumber daya perangkat keras komputer dan menjadi jembatan bagi aplikasi lain untuk berjalan?',
+        opts: ['Microsoft PowerPoint', 'Adobe Photoshop', 'Sistem Operasi (seperti Windows, Linux, atau Android)', 'Mozilla Firefox'],
+        ans: 2,
+        exp: 'Sistem Operasi (Operating System) adalah perangkat lunak sistem yang mengelola hardware dan menyediakan layanan dasar bagi perangkat lunak aplikasi.'
+      },
+      {
+        no: 26, bab: 'Bab III',
+        q: 'Urutan siklus pengolahan data pada sistem komputer yang benar dari awal hingga menghasilkan informasi bagi pengguna adalah ....',
+        opts: ['Process → Input → Output → Storage', 'Input → Process → Output (dan Storage)', 'Output → Process → Input → Storage', 'Storage → Output → Input → Process'],
+        ans: 1,
+        exp: 'Siklus pemrosesan informasi pada komputer selalu berawal dari masukan (Input), diolah oleh CPU (Process), disimpan (Storage), dan ditampilkan hasilnya (Output).'
+      },
+      {
+        no: 27, bab: 'Bab III',
+        q: 'Teknologi identifikasi otomatis yang memancarkan gelombang radio untuk membaca data dari tag/kartu elektronik tanpa perlu kontak fisik langsung—seperti pada kartu presensi siswa atau kartu uang elektronik (e-money)—disebut ....',
+        opts: ['Optical Character Recognition (OCR)', 'Radio Frequency Identification (RFID)', 'Quick Response Code (QR Code)', 'Magnetic Ink Character Recognition (MICR)'],
+        ans: 1,
+        exp: 'RFID (Radio Frequency Identification) memanfaatkan gelombang elektromagnetik/radio untuk membaca identitas dari chip tag secara nirkabel.'
+      },
+      {
+        no: 28, bab: 'Bab III',
+        q: 'Dalam satuan kapasitas penyimpanan data digital, 1 Kilobyte (KB) setara dengan 1.024 Byte, sedangkan 1 Byte terdiri atas ....',
+        opts: ['2 bit', '4 bit', '8 bit', '16 bit'],
+        ans: 2,
+        exp: '1 Byte standar dalam arsitektur komputer modern tersusun atas 8 bit (binary digit).'
+      },
+      {
+        no: 29, bab: 'Bab III',
+        q: 'Andi memiliki sebuah flashdisk berkapasitas 8 Gigabyte (GB). Ia ingin menyimpan berkas video pembelajaran berkapasitas total 2.048 Megabyte (MB). Jika 1 GB dianggap setara dengan 1.024 MB, sisa ruang penyimpanan pada flashdisk Andi adalah ....',
+        opts: ['2 GB', '4 GB', '6 GB', '7 GB'],
+        ans: 2,
+        exp: '2.048 MB ÷ 1.024 MB/GB = 2 GB. Maka sisa kapasitas flashdisk Andi adalah 8 GB − 2 GB = 6 GB.'
+      },
+      {
+        no: 30, bab: 'Bab III',
+        q: 'Saat sedang mengerjakan tugas, tiba-tiba satu aplikasi pengolah kata mengalami macet total (Not Responding), sementara kursor tetikus masih dapat digerakkan. Tindakan pemecahan masalah (troubleshooting) yang paling tepat dan aman dilakukan adalah ....',
+        opts: ['Langsung mencabut kabel listrik komputer dari stopkontak', 'Menekan tombol kombinasi Ctrl + Shift + Esc untuk membuka Task Manager dan menutup paksa aplikasi yang macet', 'Menekan tombol Reset pada casing CPU berulang kali', 'Membiarkan komputer menyala selama berhari-hari hingga baterai habis'],
+        ans: 1,
+        exp: 'Task Manager (Ctrl + Shift + Esc) memungkinkan pengguna menghentikan proses (End Task) aplikasi yang macet tanpa merusak sistem operasi atau kehilangan pekerjaan di aplikasi lain.'
+      },
+
+      // BAB IV: JARINGAN KOMPUTER & INTERNET (31-40)
+      {
+        no: 31, bab: 'Bab IV',
+        q: 'Jaringan komputer yang menghubungkan puluhan komputer di dalam satu ruang laboratorium komputer SMP Al-Akhyar sehingga dapat saling berbagi berkas dan printer secara lokal dikategorikan sebagai ....',
+        opts: ['Personal Area Network (PAN)', 'Local Area Network (LAN)', 'Metropolitan Area Network (MAN)', 'Wide Area Network (WAN)'],
+        ans: 1,
+        exp: 'LAN (Local Area Network) adalah jaringan komputer yang mencakup area lokal terbatas seperti satu ruangan, rumah, atau gedung sekolah.'
+      },
+      {
+        no: 32, bab: 'Bab IV',
+        q: 'Perangkat keras jaringan yang berfungsi menghubungkan dua atau lebih jaringan yang berbeda serta menentukan jalur (rute) terbaik agar paket data dari jaringan lokal sekolah dapat menuju server internet adalah ....',
+        opts: ['Switch', 'Repeater', 'Router', 'Network Interface Card (NIC)'],
+        ans: 2,
+        exp: 'Router bertugas menghubungkan jaringan yang berbeda (misal LAN ke WAN/Internet) dan melakukan perutean (routing) paket data.'
+      },
+      {
+        no: 33, bab: 'Bab IV',
+        q: 'Setiap perangkat yang terhubung ke jaringan internet memiliki deretan angka pengenal unik yang berfungsi sebagai alamat pengiriman dan penerimaan paket data, misalnya 192.168.1.15. Alamat unik ini disebut ....',
+        opts: ['URL (Uniform Resource Locator)', 'IP Address (Internet Protocol Address)', 'MAC Address', 'Domain Name System (DNS)'],
+        ans: 1,
+        exp: 'IP Address adalah alamat numerik unik yang diberikan pada setiap perangkat dalam jaringan berbasis protokol TCP/IP.'
+      },
+      {
+        no: 34, bab: 'Bab IV',
+        q: 'Ketika kita mengirimkan sebuah berkas foto berukuran besar melalui internet, data tersebut tidak dikirim dalam satu kesatuan utuh, melainkan dipecah menjadi potongan-potongan data kecil yang dikirim melalui berbagai jalur jaringan lalu disusun kembali di perangkat penerima. Mekanisme ini dikenal dengan istilah ....',
+        opts: ['Circuit Switching', 'Packet Switching', 'Data Mirroring', 'Cloud Syncing'],
+        ans: 1,
+        exp: 'Packet Switching memecah data menjadi paket-paket kecil berlabel alamat tujuan sehingga pengiriman melalui internet menjadi efisien dan tangguh.'
+      },
+      {
+        no: 35, bab: 'Bab IV',
+        q: 'Siti ingin memindahkan foto dari ponselnya ke laptop menggunakan koneksi nirkabel tanpa menggunakan kuota internet. Jika ia membandingkan Bluetooth dan Wi-Fi Direct, keunggulan utama Wi-Fi dibandingkan Bluetooth untuk transfer data adalah ....',
+        opts: ['Konsumsi daya baterai jauh lebih kecil dibandingkan Bluetooth Low Energy', 'Kecepatan transfer data jauh lebih tinggi dan jangkauan sinyalnya lebih luas', 'Tidak memerlukan perangkat keras penerima pada laptop', 'Hanya dapat digunakan di luar ruangan terbuka'],
+        ans: 1,
+        exp: 'Wi-Fi memiliki bandwidth (kecepatan transfer data) yang jauh lebih besar dan radius jangkauan yang lebih luas dibandingkan Bluetooth.'
+      },
+      {
+        no: 36, bab: 'Bab IV',
+        q: 'Proses membagikan koneksi internet seluler dari sebuah ponsel pintar ke perangkat laptop atau ponsel lain agar dapat mengakses internet bersama-sama disebut ....',
+        opts: ['Roaming', 'Tethering (Hotspot)', 'Phishing', 'Streaming'],
+        ans: 1,
+        exp: 'Tethering adalah metode berbagi koneksi data seluler dari perangkat mobile ke perangkat lain melalui Wi-Fi hotspot, Bluetooth, atau kabel USB.'
+      },
+      {
+        no: 37, bab: 'Bab IV',
+        q: 'Saat mengakses situs perbankan atau layanan pendidikan daring, pengguna disarankan memastikan alamat situs diawali dengan protokol https:// dan memiliki ikon gembok di bilah alamat peramban. Fungsi utama protokol HTTPS adalah ....',
+        opts: ['Mempercepat waktu pengunduhan gambar beresolusi tinggi', 'Menjamin bahwa situs web tersebut bebas dari iklan komersial', 'Mengenkripsi komunikasi data antara peramban pengguna dan server agar tidak mudah disadap pihak ketiga', 'Menghemat penggunaan kuota data internet hingga 50%'],
+        ans: 2,
+        exp: 'HTTPS (Hypertext Transfer Protocol Secure) mengenkripsi lalu lintas data menggunakan sertifikat SSL/TLS sehingga aman dari penyadapan (eavesdropping).'
+      },
+      {
+        no: 38, bab: 'Bab IV',
+        q: 'Dalam teknik kriptografi klasik Caesar Cipher dengan aturan pergeseran maju sebanyak 3 huruf (Kunci = +3, di mana A menjadi D, B menjadi E, dan seterusnya), hasil enkripsi dari kata asli (plaintext) "DATA" adalah ....',
+        opts: ['FCVC', 'GDWD', 'HEXD', 'CBUA'],
+        ans: 1,
+        exp: 'Geser setiap huruf maju 3 langkah: D (+3) → G, A (+3) → D, T (+3) → W, A (+3) → D. Hasil ciphertext-nya adalah "GDWD".'
+      },
+      {
+        no: 39, bab: 'Bab IV',
+        q: 'Sebuah pesan rahasia (ciphertext) bertuliskan "KROD" diterima oleh tim sandi. Jika diketahui pesan tersebut dienkripsi menggunakan Caesar Cipher dengan pergeseran maju 3 huruf (+3), maka pesan asli (plaintext) setelah didekripsi adalah ....',
+        opts: ['HALO', 'HOLA', 'KOTA', 'LIMA'],
+        ans: 1,
+        exp: 'Dekripsi dilakukan dengan menggeser mundur 3 huruf (-3): K (-3) → H, R (-3) → O, O (-3) → L, D (-3) → A. Kata aslinya adalah "HOLA".'
+      },
+      {
+        no: 40, bab: 'Bab IV',
+        q: 'Manakah di antara pilihan kata sandi (password) berikut yang memiliki tingkat keamanan paling kuat terhadap serangan tebakan otomatis (brute-force)?',
+        opts: ['12345678', 'budi2013', 'SMPAlAkhyar#2026', 'qwertyuiop'],
+        ans: 2,
+        exp: 'SMPAlAkhyar#2026 memiliki panjang lebih dari 12 karakter serta mengombinasikan huruf kapital, huruf kecil, simbol khusus (#), dan angka.'
+      }
+    ];
+
+    const essayQuestions = [
+      {
+        no: 41, bab: 'Bab I • Berpikir Komputasional (Optimasi Penjadwalan)',
+        q: 'Ibu ingin menyiapkan sarapan pagi dengan rincian kegiatan sebagai berikut:\n• Merebus air menggunakan ketel listrik otomatis: 8 menit\n• Menggoreng telur dadar: 5 menit\n• Memotong buah-buahan: 4 menit\n• Menyeduh teh manis (hanya dapat dilakukan setelah air mendidih): 2 menit\n\nSusunlah jadwal pengerjaan keempat kegiatan tersebut secara paralel agar seluruh sarapan siap dalam waktu paling singkat, dan tentukan total waktu minimum yang dibutuhkan Ibu!',
+        rubric: '• Total waktu minimum yang dibutuhkan adalah <strong>10 menit</strong>.<br>• <strong>Rincian Jadwal Paralel:</strong><br>  - Menit ke-0 s.d. ke-8 (8 menit): Menyalakan ketel listrik otomatis untuk merebus air. Secara bersamaan (paralel), Ibu menggoreng telur (menit 0–5, selesai 5 menit) lalu mulai memotong buah (menit 5–8, selesai 3 menit pertama).<br>  - Menit ke-8 s.d. ke-9 (1 menit): Air sudah mendidih; Ibu menyelesaikan sisa memotong buah (1 menit).<br>  - Menit ke-9 s.d. ke-10 (1 menit) atau langsung di menit ke-8 s.d. ke-10 (2 menit): Ibu menyeduh teh manis menggunakan air mendidih.<br>• Total keseluruhan waktu = 8 + 2 = <strong>10 menit</strong> (jauh lebih hemat dibanding berurutan 19 menit).'
+      },
+      {
+        no: 42, bab: 'Bab I • Berpikir Komputasional (Representasi Data Biner)',
+        q: 'Jelaskan langkah-langkah mengonversi bilangan desimal 25 ke dalam bentuk bilangan biner 5-bit menggunakan konsep kartu titik (16 – 8 – 4 – 2 – 1), kemudian tentukan status setiap kartu (Terbuka/Tertutup)!',
+        rubric: '• Cari kombinasi nilai kartu titik (16, 8, 4, 2, 1) yang jumlahnya sama dengan 25:<br>  - 25 − 16 = 9 → Kartu <strong>16 Terbuka (1)</strong><br>  - 9 − 8 = 1 → Kartu <strong>8 Terbuka (1)</strong><br>  - Sisa 1 lebih kecil dari 4 → Kartu <strong>4 Tertutup (0)</strong><br>  - Sisa 1 lebih kecil dari 2 → Kartu <strong>2 Tertutup (0)</strong><br>  - 1 − 1 = 0 → Kartu <strong>1 Terbuka (1)</strong><br>• Jadi, representasi biner 5-bit dari desimal 25 adalah <strong>11001</strong> (Terbuka – Terbuka – Tertutup – Tertutup – Terbuka).'
+      },
+      {
+        no: 43, bab: 'Bab I • Berpikir Komputasional (4 Pilar BK)',
+        q: 'Sebuah tim kebersihan sekolah diminta membersihkan seluruh area gedung sekolah yang terdiri atas 12 ruang kelas, 1 perpustakaan, 1 laboratorium, dan halaman sekolah dalam waktu 45 menit. Jelaskan bagaimana penerapan Dekomposisi dan Algoritma dapat membantu tim tersebut menyelesaikan tugasnya tepat waktu!',
+        rubric: '• <strong>Dekomposisi:</strong> Memecah pekerjaan besar (membersihkan seluruh gedung) menjadi zona-zona kerja kecil yang spesifik (kelompok kelas lantai 1, kelompok kelas lantai 2, tim perpustakaan & lab, serta tim halaman) dan membagi anggota tim ke masing-masing zona.<br>• <strong>Algoritma:</strong> Menyusun urutan langkah kerja yang efektif dan sistematis di setiap ruangan, misalnya: (1) mengangkat kursi ke atas meja, (2) membersihkan papan tulis dan meja, (3) menyapu lantai dari sudut dalam menuju pintu keluar, (4) mengepel lantai, dan (5) membuang sampah ke tempat penampungan.'
+      },
+      {
+        no: 44, bab: 'Bab II • TIK & Literasi Digital (Manajemen Berkas)',
+        q: 'Seorang siswa menyimpan seluruh berkas tugas sekolahnya secara acak di desktop dengan nama file berikut: Tugas_IPA.docx, Nilai_MTK.xlsx, Poster_OSIS.jpg, Pidato_Bahasa.docx, Grafik_Sains.xlsx, dan Foto_Lomba.jpg. Rancanglah struktur hierarki folder di dalam Drive D:\\Sekolah_Kelas7\\ untuk mengelompokkan keenam berkas tersebut berdasarkan jenis ekstensinya, lalu tuliskan 1 contoh jalur direktori (path) lengkapnya!',
+        rubric: '• <strong>Rancangan Struktur Hierarki Folder:</strong><br>  - <code>D:\\Sekolah_Kelas7\\Dokumen_Teks\\</code> → berisi <em>Tugas_IPA.docx</em> dan <em>Pidato_Bahasa.docx</em><br>  - <code>D:\\Sekolah_Kelas7\\Data_Angka\\</code> → berisi <em>Nilai_MTK.xlsx</em> dan <em>Grafik_Sains.xlsx</em><br>  - <code>D:\\Sekolah_Kelas7\\Dokumentasi_Gambar\\</code> → berisi <em>Poster_OSIS.jpg</em> dan <em>Foto_Lomba.jpg</em><br>• <strong>Contoh Path Lengkap:</strong> <code>D:\\Sekolah_Kelas7\\Dokumen_Teks\\Tugas_IPA.docx</code>'
+      },
+      {
+        no: 45, bab: 'Bab II • TIK & Literasi Digital (Komunikasi Daring)',
+        q: 'Jelaskan fungsi dan perbedaan penggunaan kolom To, Cc (Carbon Copy), dan Bcc (Blind Carbon Copy) saat mengirimkan surel (email) resmi kepada guru dan teman satu kelompok!',
+        rubric: '• <strong>To (Kepada):</strong> Diisi alamat email penerima utama yang dituju langsung untuk menindaklanjuti isi pesan (misalnya guru mata pelajaran).<br>• <strong>Cc (Carbon Copy):</strong> Diisi alamat email pihak lain yang perlu mengetahui isi email sebagai tembusan terbuka (misalnya anggota kelompok lain; semua penerima dapat melihat alamat email di kolom Cc).<br>• <strong>Bcc (Blind Carbon Copy):</strong> Diisi alamat email penerima tembusan rahasia di mana daftar penerima di kolom ini disembunyikan dari penerima lainnya untuk menjaga privasi.'
+      },
+      {
+        no: 46, bab: 'Bab III • Sistem Komputer (Interaksi Komponen)',
+        q: 'Jelaskan hubungan kerja sama antara Hardware, Software, dan Brainware ketika seorang siswa mengetik naskah cerita menggunakan aplikasi pengolah kata hingga mencetaknya di atas kertas!',
+        rubric: '• <strong>Brainware (Siswa):</strong> Memberikan perintah dengan mengetikkan huruf melalui papan ketik (keyboard) dan mengklik menu cetak.<br>• <strong>Hardware (Perangkat Keras):</strong> Keyboard menangkap tekanan tombol sebagai sinyal input, CPU memprosesnya, RAM menampung dokumen aktif, Monitor menampilkan tampilan visual, dan Printer mencetak hasilnya ke kertas.<br>• <strong>Software (Perangkat Lunak):</strong> Sistem Operasi menjembatani komunikasi antara keyboard/printer dengan aplikasi pengolah kata yang menerjemahkan input ketikan menjadi tata letak dokumen siap cetak.'
+      },
+      {
+        no: 47, bab: 'Bab III • Sistem Komputer (Memori Komputer)',
+        q: 'Mengapa sebuah komputer yang memiliki kapasitas RAM terlalu kecil akan terasa lambat (lag) ketika pengguna membuka banyak tab peramban web dan aplikasi secara bersamaan? Jelaskan kaitannya dengan fungsi RAM dan media penyimpanan sekunder (HDD/SSD)!',
+        rubric: '• RAM berfungsi sebagai ruang kerja sementara berkecepatan tinggi untuk menampung seluruh data program dan tab browser yang sedang aktif dijalankan oleh CPU.<br>• Jika kapasitas RAM kecil dan penuh akibat terlalu banyak aplikasi terbuka, sistem operasi terpaksa memindahkan sebagian data sementara ke media penyimpanan sekunder (HDD/SSD) yang kecepatannya jauh lebih lambat (proses <em>paging/swapping</em>), sehingga kinerja komputer terasa lambat (lag).'
+      },
+      {
+        no: 48, bab: 'Bab IV • Jaringan Komputer & Internet (Infrastruktur Jaringan)',
+        q: 'Jelaskan perbedaan fungsi antara jaringan lokal (LAN) dan Internet, serta sebutkan 2 perangkat jaringan yang dibutuhkan agar komputer di laboratorium sekolah dapat terhubung ke internet!',
+        rubric: '• <strong>Perbedaan LAN dan Internet:</strong> LAN (Local Area Network) menghubungkan perangkat dalam area geografis terbatas seperti satu ruangan atau gedung sekolah, sedangkan Internet adalah jaringan komunikasi global berskala dunia yang menghubungkan jutaan jaringan lokal.<br>• <strong>2 Perangkat Jaringan yang Dibutuhkan:</strong><br>  1. <strong>Router / Modem:</strong> Menghubungkan jaringan lokal sekolah ke penyedia layanan internet (ISP) dan mengatur rute paket data.<br>  2. <strong>Switch / Access Point (Wi-Fi):</strong> Mendistribusikan koneksi jaringan ke masing-masing unit komputer klien melalui kabel UTP atau sinyal nirkabel.'
+      },
+      {
+        no: 49, bab: 'Bab IV • Jaringan Komputer & Internet (Kriptografi)',
+        q: 'Lakukan proses enkripsi terhadap kata "INFORMATIKA" menggunakan metode Caesar Cipher dengan kunci pergeseran maju sebanyak 3 huruf (+3). Tuliskan hasil ciphertext-nya beserta penjelasan singkat langkah pergeserannya!',
+        rubric: '• Aturan pergeseran +3 maju pada alfabet: I→L, N→Q, F→I, O→R, R→U, M→P, A→D, T→W, I→L, K→N, A→D.<br>• Hasil ciphertext lengkap dari kata "INFORMATIKA" adalah: <strong>LQIRUPDWLND</strong>.'
+      },
+      {
+        no: 50, bab: 'Bab IV • Jaringan Komputer & Internet (Keamanan Digital)',
+        q: 'Sebutkan 3 ciri kata sandi (password) yang kuat dan aman, serta jelaskan 2 bahaya yang dapat terjadi apabila siswa membagikan kata sandi akun belajarnya kepada orang lain!',
+        rubric: '• <strong>3 Ciri Kata Sandi Kuat:</strong><br>  1. Panjang minimal 8 hingga 12 karakter atau lebih.<br>  2. Mengombinasikan huruf kapital, huruf kecil, angka, dan simbol khusus (contoh: !, @, #, $).<br>  3. Tidak menggunakan data pribadi yang mudah ditebak seperti tanggal lahir, nama sendiri, atau urutan angka sederhana (123456).<br>• <strong>2 Bahaya Membagikan Kata Sandi:</strong><br>  1. Pencurian atau penghapusan tugas dan data pribadi oleh pihak tidak bertanggung jawab.<br>  2. Penyalahgunaan akun untuk mengirim pesan hoaks/perundungan atas nama pemilik akun asli (pencurian identitas).'
+      }
+    ];
+
+    let currentPGFilter = 'ALL';
+    let userPGAnswers = {}; // questionNo -> selectedOptionIndex
+    let timerSeconds = 0;
+    let timerInterval = null;
+
+    function startQuizTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timerSeconds++;
+        const mins = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+        const secs = String(timerSeconds % 60).padStart(2, '0');
+        const el = document.getElementById('quiz-timer');
+        if (el) el.textContent = `${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function switchQuizSubMode(sub) {
+      document.getElementById('quiz-pg-container').classList.toggle('hidden', sub !== 'pg');
+      document.getElementById('quiz-essay-container').classList.toggle('hidden', sub !== 'essay');
+
+      document.getElementById('subtab-pg').className = sub === 'pg'
+        ? 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white shadow-sm transition'
+        : 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 transition';
+      document.getElementById('subtab-essay').className = sub === 'essay'
+        ? 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 text-white shadow-sm transition'
+        : 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 transition';
+    }
+
+    function filterPGQuestions(babFilter) {
+      currentPGFilter = babFilter;
+      document.querySelectorAll('.pg-filter-btn').forEach(btn => {
+        btn.className = 'pg-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200';
+      });
+      const activeBtn = document.getElementById(`filter-pg-${babFilter}`);
+      if (activeBtn) {
+        activeBtn.className = 'pg-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-indigo-600 text-white';
+      }
+      renderPGQuestions();
+    }
+
+    function selectPGAnswer(qNo, optIdx) {
+      userPGAnswers[qNo] = optIdx;
+      renderPGQuestions();
+    }
+
+    function renderPGQuestions() {
+      const listEl = document.getElementById('pg-questions-list');
+      const showInstant = document.getElementById('instant-feedback-toggle').checked;
+      const filtered = currentPGFilter === 'ALL'
+        ? pgQuestions
+        : pgQuestions.filter(q => q.bab === currentPGFilter);
+
+      document.getElementById('pg-total-count').textContent = filtered.length;
+      const answeredInFilter = filtered.filter(q => userPGAnswers[q.no] !== undefined).length;
+      document.getElementById('pg-answered-count').textContent = answeredInFilter;
+
+      listEl.innerHTML = '';
+      const letters = ['A', 'B', 'C', 'D'];
+
+      filtered.forEach(item => {
+        const chosen = userPGAnswers[item.no];
+        const isAnswered = chosen !== undefined;
+        const isCorrect = chosen === item.ans;
+
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm space-y-4';
+
+        const optionsHtml = item.opts.map((optText, idx) => {
+          let btnStyle = 'border-slate-200 bg-slate-50/70 text-slate-800 hover:border-indigo-300 hover:bg-indigo-50/40';
+          let badgeStyle = 'bg-white border-slate-300 text-slate-700';
+
+          if (isAnswered) {
+            if (showInstant) {
+              if (idx === item.ans) {
+                btnStyle = 'border-emerald-500 bg-emerald-50 text-emerald-950 font-semibold';
+                badgeStyle = 'bg-emerald-600 border-emerald-600 text-white';
+              } else if (idx === chosen && chosen !== item.ans) {
+                btnStyle = 'border-rose-500 bg-rose-50 text-rose-950';
+                badgeStyle = 'bg-rose-600 border-rose-600 text-white';
+              } else {
+                btnStyle = 'border-slate-200 bg-white text-slate-400';
+              }
+            } else if (idx === chosen) {
+              btnStyle = 'border-indigo-600 bg-indigo-50 text-indigo-950 font-semibold';
+              badgeStyle = 'bg-indigo-600 border-indigo-600 text-white';
+            }
+          }
+
+          return `
+            <button type="button" onclick="selectPGAnswer(${item.no}, ${idx})" class="w-full text-left p-3.5 rounded-2xl border-2 transition-all flex items-start gap-3 ${btnStyle}">
+              <span class="w-7 h-7 rounded-xl border flex items-center justify-center text-xs font-extrabold shrink-0 mt-0.5 ${badgeStyle}">
+                ${letters[idx]}
+              </span>
+              <span class="text-xs sm:text-sm leading-relaxed">${optText}</span>
+            </button>
+          `;
+        }).join('');
+
+        const explanationHtml = (isAnswered && showInstant) ? `
+          <div class="rounded-2xl p-4 text-xs sm:text-sm leading-relaxed border ${
+            isCorrect
+              ? 'bg-emerald-50/80 border-emerald-200 text-emerald-950'
+              : 'bg-amber-50/90 border-amber-200 text-amber-950'
+          }">
+            <p class="font-extrabold mb-1 flex items-center gap-1.5">
+              <i class="fa-solid ${isCorrect ? 'fa-circle-check text-emerald-600' : 'fa-lightbulb text-amber-600'}"></i>
+              ${isCorrect ? 'Jawaban Tepat!' : `Kurang Tepat — Kunci Jawaban: ${letters[item.ans]}`}
+            </p>
+            <p>${item.exp}</p>
+          </div>
+        ` : '';
+
+        card.innerHTML = `
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="px-3 py-1 rounded-xl bg-indigo-600 text-white text-xs font-extrabold">Soal No. ${item.no}</span>
+              <span class="px-2.5 py-1 rounded-xl bg-slate-100 text-slate-600 text-xs font-bold">${item.bab}</span>
+            </div>
+            ${isAnswered && showInstant ? (
+              isCorrect
+                ? '<span class="text-xs font-bold text-emerald-600"><i class="fa-solid fa-check mr-1"></i>Benar</span>'
+                : '<span class="text-xs font-bold text-rose-600"><i class="fa-solid fa-xmark mr-1"></i>Salah</span>'
+            ) : ''}
+          </div>
+          <p class="text-sm sm:text-base font-semibold text-slate-900 leading-relaxed whitespace-pre-line">${item.q}</p>
+          <div class="grid grid-cols-1 gap-2.5">
+            ${optionsHtml}
+          </div>
+          ${explanationHtml}
+        `;
+        listEl.appendChild(card);
+      });
+    }
+
+    function resetPGQuiz() {
+      userPGAnswers = {};
+      timerSeconds = 0;
+      document.getElementById('pg-result-card').classList.add('hidden');
+      renderPGQuestions();
+      showToast('Jawaban kuis Pilihan Ganda telah direset.', 'info');
+    }
+
+    function finishAndGradePG() {
+      const filtered = currentPGFilter === 'ALL'
+        ? pgQuestions
+        : pgQuestions.filter(q => q.bab === currentPGFilter);
+
+      let correctCount = 0;
+      const babStats = {
+        'Bab I': { total: 0, correct: 0, label: 'Berpikir Komputasional' },
+        'Bab II': { total: 0, correct: 0, label: 'TIK & Literasi Digital' },
+        'Bab III': { total: 0, correct: 0, label: 'Sistem Komputer' },
+        'Bab IV': { total: 0, correct: 0, label: 'Jaringan & Internet' }
+      };
+
+      filtered.forEach(q => {
+        babStats[q.bab].total++;
+        if (userPGAnswers[q.no] === q.ans) {
+          correctCount++;
+          babStats[q.bab].correct++;
+        }
+      });
+
+      const scale100 = Math.round((correctCount / filtered.length) * 100);
+      const bobot60 = ((correctCount / filtered.length) * 60).toFixed(1);
+      const passedKKTP = scale100 >= 76;
+
+      // Turn on instant feedback so student can review every question
+      document.getElementById('instant-feedback-toggle').checked = true;
+      renderPGQuestions();
+
+      const breakdownHtml = Object.entries(babStats)
+        .filter(([_, s]) => s.total > 0)
+        .map(([babKey, s]) => {
+          const pct = Math.round((s.correct / s.total) * 100);
+          return `
+            <div class="bg-slate-50 rounded-2xl p-3.5 border border-slate-200">
+              <div class="flex justify-between text-xs font-bold text-slate-700 mb-1">
+                <span>${babKey}: ${s.label}</span>
+                <span>${s.correct}/${s.total} (${pct}%)</span>
+              </div>
+              <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                <div class="h-full ${pct >= 76 ? 'bg-emerald-500' : 'bg-amber-500'}" style="width: ${pct}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      const resCard = document.getElementById('pg-result-card');
+      resCard.classList.remove('hidden');
+      resCard.innerHTML = `
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-5">
+          <div>
+            <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase px-3 py-1 rounded-full ${
+              passedKKTP ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'
+            }">
+              <i class="fa-solid ${passedKKTP ? 'fa-award' : 'fa-circle-exclamation'}"></i>
+              ${passedKKTP ? 'TUNTAS MELAMPAUI KKTP (≥ 76)' : 'BELUM TUNTAS KKTP (< 76) — PERLU PENGAYAAN'}
+            </span>
+            <h3 class="text-2xl font-extrabold text-slate-900 mt-2">Hasil Evaluasi Pilihan Ganda</h3>
+            <p class="text-xs sm:text-sm text-slate-600">Seluruh kunci jawaban dan pembahasan langkah demi langkah telah dibuka di bawah ini.</p>
+          </div>
+          <div class="flex items-center gap-4 bg-slate-900 text-white px-5 py-4 rounded-2xl shrink-0">
+            <div class="text-center">
+              <span class="text-[11px] text-slate-400 uppercase block">Nilai Skala 100</span>
+              <span class="text-3xl font-extrabold ${passedKKTP ? 'text-emerald-400' : 'text-amber-400'}">${scale100}</span>
+            </div>
+            <div class="h-9 w-px bg-slate-700"></div>
+            <div class="text-center">
+              <span class="text-[11px] text-slate-400 uppercase block">Skor Bobot PG</span>
+              <span class="text-2xl font-extrabold text-indigo-300">${bobot60} <span class="text-xs text-slate-400">/ 60</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          ${breakdownHtml}
+        </div>
+      `;
+      resCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showToast(`Penilaian selesai! Nilai kamu: ${scale100} (KKTP: 76).`, passedKKTP ? 'success' : 'warning');
+    }
+
+    // =========================================================================
+    // 9. ESSAY QUESTIONS (NO. 41 - 50)
+    // =========================================================================
+    function renderEssayQuestions() {
+      const listEl = document.getElementById('essay-questions-list');
+      listEl.innerHTML = '';
+
+      essayQuestions.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm space-y-4';
+        card.innerHTML = `
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="px-3 py-1 rounded-xl bg-amber-600 text-white text-xs font-extrabold">Uraian No. ${item.no}</span>
+              <span class="px-2.5 py-1 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">${item.bab}</span>
+            </div>
+            <span class="text-xs font-bold text-slate-400">Bobot Maksimal: 4 Poin</span>
+          </div>
+          <p class="text-sm sm:text-base font-semibold text-slate-900 leading-relaxed whitespace-pre-line">${item.q}</p>
+          <div>
+            <label class="block text-xs font-bold text-slate-500 uppercase mb-1.5">Lembar Jawaban Siswa:</label>
+            <textarea rows="3" class="w-full rounded-2xl border border-slate-300 p-3.5 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Tuliskan jawaban dan langkah penyelesaianmu di sini sebelum membuka kunci..."></textarea>
+          </div>
+          <div class="flex justify-end">
+            <button type="button" onclick="toggleEssayRubric(${item.no})" id="btn-rubric-${item.no}" class="px-4 py-2 rounded-xl bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs sm:text-sm font-bold hover:bg-indigo-100 transition">
+              <i class="fa-solid fa-key mr-1.5"></i> Lihat Kunci Jawaban & Rubrik Pembahasan
+            </button>
+          </div>
+          <div id="rubric-box-${item.no}" class="hidden rounded-2xl bg-emerald-50/90 border border-emerald-200 p-4 text-xs sm:text-sm text-emerald-950 leading-relaxed space-y-1">
+            <p class="font-extrabold text-emerald-800 flex items-center gap-1.5 mb-1">
+              <i class="fa-solid fa-clipboard-check"></i> Kunci Jawaban Esensial & Rubrik Penilaian Guru:
+            </p>
+            <div>${item.rubric}</div>
+          </div>
+        `;
+        listEl.appendChild(card);
+      });
+    }
+
+    function toggleEssayRubric(no) {
+      const box = document.getElementById(`rubric-box-${no}`);
+      const btn = document.getElementById(`btn-rubric-${no}`);
+      const isHidden = box.classList.toggle('hidden');
+      btn.innerHTML = isHidden
+        ? '<i class="fa-solid fa-key mr-1.5"></i> Lihat Kunci Jawaban & Rubrik Pembahasan'
+        : '<i class="fa-solid fa-eye-slash mr-1.5"></i> Sembunyikan Kunci Jawaban';
+    }
+
+    function revealAllEssays() {
+      essayQuestions.forEach(item => {
+        document.getElementById(`rubric-box-${item.no}`).classList.remove('hidden');
+        document.getElementById(`btn-rubric-${item.no}`).innerHTML =
+          '<i class="fa-solid fa-eye-slash mr-1.5"></i> Sembunyikan Kunci Jawaban';
+      });
+      showToast('Seluruh kunci jawaban uraian (No. 41–50) telah ditampilkan.', 'info');
+    }
+
+    // =========================================================================
+    // 10. INITIALIZATION ON PAGE LOAD
+    // =========================================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      renderBinaryCards();
+      renderScheduleLab();
+      renderFolderLab();
+      updateCipher();
+      checkPasswordStrength();
+      renderMateriAccordions();
+      renderPGQuestions();
+      renderEssayQuestions();
+    });
+  </script>
+</body>
+</html>
